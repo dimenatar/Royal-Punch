@@ -14,10 +14,18 @@ public class PlayerAnimations : MonoBehaviour
     private const string RUN_RIGHT = "RunR";
     private const string RUN_BACKWARDS = "RunB";
 
+    private const string START_FIGHT = "StartFight";
+    private const string END_FIGHT = "EndFight";
+
     private const string IS_RUNNING = "IsRunning";
     private const string IS_IN_FIGHT = "IsInFight";
     private const string IS_HITTED = "IsHitted";
     #endregion
+
+    private void Awake()
+    {
+        
+    }
 
     private void FixedUpdate()
     {
@@ -38,12 +46,12 @@ public class PlayerAnimations : MonoBehaviour
             return;
         }
         //straight
-        if (direction.x >= -0.1f && direction.x <= 0.1f && direction.y > 0)
+        if (direction.x >= -0.3f && direction.x <= 0.3f && direction.y > 0)
         {
             _playerAnimator.SetTrigger(RUN_STRAIGHT);
         }
         //backwards
-        else if (direction.x >= -0.1f && direction.x <= 0.1f && direction.y < 0)
+        else if (direction.x >= -0.3f && direction.x <= 0.3f && direction.y < 0)
         {
             _playerAnimator.SetTrigger(RUN_BACKWARDS);
         }

@@ -7,9 +7,11 @@ public class EnemySpecial : MonoBehaviour
     [SerializeField] private PlayerMovement _player;
     [SerializeField] private Transform _playerTransform;
 
+    [SerializeField] private Timer _timer;
+
     [SerializeField] private float _draggingPlayerForce = 1;
 
-    private void FixedUpdate()
+    private void PickRandomSpecialAttack()
     {
 
     }
