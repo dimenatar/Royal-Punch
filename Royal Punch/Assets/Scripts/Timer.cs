@@ -39,6 +39,11 @@ public class Timer : MonoBehaviour
         }
     }
 
+    public void ClearEvent()
+    {
+        OnTime = null;
+    }
+
     public void StopTimer()
     {
         _isStarted = false;
@@ -53,6 +58,7 @@ public class Timer : MonoBehaviour
     public void UpdateTimer()
     {
         _time = 0;
+        _isStarted = true;
     }
 
     public void UpdateTimer(float newDelay)
