@@ -12,10 +12,16 @@ public class EnemyFight : MonoBehaviour
 
     private bool _isInFight;
 
+    public bool IsInTriggerWithPlayer { get; set; }
     public bool IsInFight => _isInFight;
 
     public event Action OnStartFight;
     public event Action OnEndFight;
+
+    private void Awake()
+    {
+        _enemySpecial.OnSpecialAttackEnded += TryStartFightWithPlayer;
+    }
 
     private void OnTriggerStay(Collider other)
     {
@@ -33,9 +39,9 @@ public class EnemyFight : MonoBehaviour
     {
         if (_isInFight)
         {
+            _isInFight = false;
             OnEndFight?.Invoke();
             StopCoroutine(nameof(AttackPlayer));
-            _isInFight = false;
         }
     }
 
@@ -43,9 +49,9 @@ public class EnemyFight : MonoBehaviour
     {
         if (!_enemySpecial.IsInSpecialAttack)
         {
+            _isInFight = true;
             OnStartFight?.Invoke();
             StartCoroutine(nameof(AttackPlayer));
-            _isInFight = true;
         }
     }
 
@@ -55,6 +61,14 @@ public class EnemyFight : MonoBehaviour
         {
             _player.TakeDamage(_baseAttackDamage);
             yield return new WaitForSeconds(_delayBetweenHits);
+        }
+    }
+
+    private void TryStartFightWithPlayer()
+    {
+        if (IsInTriggerWithPlayer && !_isInFight)
+        {
+            StartFightWithPlayer();
         }
     }
 }

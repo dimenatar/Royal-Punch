@@ -23,11 +23,17 @@ public class EnemySpecial : MonoBehaviour
     public delegate void SpecialAttackPicked(SpecialAttacks attack);
 
     public event SpecialAttackPicked OnSpecialAttackPicked;
+    public event Action OnSpecialAttackEnded;
 
     private void Awake()
     {
         _timerBetweenSpecialAttacks.OnTime += PickRandomSpecialAttack;
         OnSpecialAttackPicked += StartAttack;
+    }
+
+    private void Start()
+    {
+        _timerBetweenSpecialAttacks.Initialise(_delayBetweenSpecialAttacks);
     }
 
     private void PickRandomSpecialAttack()
@@ -56,6 +62,7 @@ public class EnemySpecial : MonoBehaviour
                     _specialAttackTimer.ClearEvent();
                     _specialAttackTimer.OnTime += () => StopCoroutine(nameof(StartDraggingPlayer));
                     _specialAttackTimer.OnTime += () => _isInSpecialAttack = false;
+                    _specialAttackTimer.OnTime += () => OnSpecialAttackEnded?.Invoke();
                     break;
                 }
             case SpecialAttacks.SplashArea:

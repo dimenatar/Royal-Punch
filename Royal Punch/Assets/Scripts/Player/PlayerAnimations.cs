@@ -6,6 +6,7 @@ public class PlayerAnimations : MonoBehaviour
 {
     [SerializeField] private SimpleTouchController _touchController;
     [SerializeField] private Animator _playerAnimator;
+    [SerializeField] private PlayerFight _playerFight;
 
     #region Animation triggers and bools
     private const string IDLE = "Idle";
@@ -17,14 +18,14 @@ public class PlayerAnimations : MonoBehaviour
     private const string START_FIGHT = "StartFight";
     private const string END_FIGHT = "EndFight";
 
-    private const string IS_RUNNING = "IsRunning";
     private const string IS_IN_FIGHT = "IsInFight";
     private const string IS_HITTED = "IsHitted";
     #endregion
 
     private void Awake()
     {
-        
+        _playerFight.OnEnemyEntersTrigger += StartFightAnimation;
+        _playerFight.OnEnemyExitsTrigger += EndStartAnimation;
     }
 
     private void FixedUpdate()
@@ -36,6 +37,10 @@ public class PlayerAnimations : MonoBehaviour
     {
 
     }
+
+    public void StartFightAnimation() => _playerAnimator.SetTrigger(START_FIGHT);
+
+    public void EndStartAnimation() => _playerAnimator.SetTrigger(END_FIGHT);
 
     private void SetRunningAnimation(Vector2 direction)
     {

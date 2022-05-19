@@ -12,8 +12,8 @@ public class EnemyAnimations : MonoBehaviour
     private const string STREAM_ATTACK = "Stream";
     private const string SPLASH_ATTACK = "Splash";
     private const string DRAGGING_ATTACK = "Dragging";
-    private const string START_ATTACK = "StartAttack";
-    private const string END_ATTACK = "EndAttack";
+    private const string START_ATTACK = "StartFight";
+    private const string END_ATTACK = "EndFight";
     #endregion
 
     private void Awake()
@@ -43,6 +43,5 @@ public class EnemyAnimations : MonoBehaviour
                     break;
                 }
         }
-
     }
 }
