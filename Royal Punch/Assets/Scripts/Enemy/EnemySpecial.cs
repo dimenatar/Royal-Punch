@@ -50,6 +50,7 @@ public class EnemySpecial : MonoBehaviour
 
     private void StartAttack(SpecialAttacks attack)
     {
+        print(attack);
         switch (attack)
         {
             case SpecialAttacks.Stream:
