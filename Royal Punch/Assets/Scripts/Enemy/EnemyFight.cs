@@ -26,13 +26,14 @@ public class EnemyFight : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         //in case some troubles
-        if (!_isInFight)
-        {
-            if (other.GetComponent<Character>())
-            {
-                StartFightWithPlayer();
-            }
-        }
+        //if (!_isInFight)
+        //{
+        //    if (other.GetComponent<Character>())
+        //    {
+        //        print("TRIGGER START");
+        //        StartFightWithPlayer();
+        //    }
+        //}
     }
 
     public void StopFightWithPlayer()

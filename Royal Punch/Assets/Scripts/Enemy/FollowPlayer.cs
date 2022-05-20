@@ -22,6 +22,9 @@ public class FollowPlayer : MonoBehaviour
         if (_isFollowing)
         {
             _enemy.LookAt(_player);
+            //_enemy.eulerAngles = new Vector3(_enemy.eulerAngles.x, 0, _enemy.eulerAngles.z);
+            _enemy.eulerAngles = new Vector3(0, _enemy.eulerAngles.y, 0);
         }
     }
+
 }

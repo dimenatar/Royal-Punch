@@ -8,13 +8,19 @@ public class Timer : MonoBehaviour
     private float _delay;
     private float _time;
     private bool _isStarted;
+    private bool _isRepeating;
 
     public bool IsStarted => _isStarted;
 
-    public void Initialise(float delay) 
+    public void Initialise(float delay, bool startOnInit = false, bool repeating = false) 
     {
         _time = 0;
         _delay = delay;
+        _isRepeating = repeating;
+        if (startOnInit)
+        {
+            _isStarted = true;
+        }
     }
 
     public void StartTimer()
@@ -30,6 +36,7 @@ public class Timer : MonoBehaviour
             if (_time >= _delay)
             {
                 OnTime?.Invoke();
+                if (!_isRepeating)
                 _time = 0;
             }
             else
