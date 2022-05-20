@@ -6,12 +6,14 @@ using UnityEngine;
 public class Character : MonoBehaviour
 {
     private int _health;
+    private int _maxHealth;
 
     public delegate void HealthChanged(int currentHealth);
 
     public event HealthChanged OnHealthChanged;
     public event Action OnDied;
 
+    public int MaxHealth { get; private set; }
     public int Health { get => _health; set
         {
             _health = value;
@@ -30,6 +32,7 @@ public class Character : MonoBehaviour
     public void Initialise(int health)
     {
         _health = health;
+        MaxHealth = health;
     }
 
     public void TakeDamage(int damage)
