@@ -6,10 +6,10 @@ using UnityEngine;
 public class Upgrade
 {
     [SerializeField] private int _order;
-    [SerializeField] private int _price;
+    [SerializeField] private int _priceToNext;
 
     public int Order => _order;
-    public int Price => _price;
+    public int PriceToNext => _priceToNext;
 
     public void SetOrder(int order)
     {

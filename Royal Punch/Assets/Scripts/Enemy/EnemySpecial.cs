@@ -42,8 +42,18 @@ public class EnemySpecial : MonoBehaviour
 
     private void Start()
     {
-        _timerBetweenSpecialAttacks.Initialise(_delayBetweenSpecialAttacks, startOnInit: true, repeating: true);
+        
         //_timerBetweenSpecialAttacks.StartTimer();
+    }
+
+    public void Initialise()
+    {
+        _timerBetweenSpecialAttacks.Initialise(_delayBetweenSpecialAttacks, startOnInit: true, repeating: true);
+    }
+
+    public void StopSpecials()
+    {
+        _timerBetweenSpecialAttacks.StopTimer();
     }
 
     private void PickRandomSpecialAttack()

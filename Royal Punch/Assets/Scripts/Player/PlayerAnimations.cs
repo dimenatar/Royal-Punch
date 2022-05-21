@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class PlayerAnimations : MonoBehaviour
 {
     [SerializeField] private SimpleTouchController _touchController;
     [SerializeField] private Animator _playerAnimator;
     [SerializeField] private PlayerFight _playerFight;
+    [SerializeField] private Ragdoll _playerRagdoll;
 
     #region Animation triggers and bools
     private const string IDLE = "Idle";
@@ -20,17 +22,65 @@ public class PlayerAnimations : MonoBehaviour
 
     private const string IS_IN_FIGHT = "IsInFight";
     private const string IS_HITTED = "IsHitted";
+
+    private int STAND_ID = Animator.StringToHash("Idle2");
     #endregion
 
     private void Awake()
     {
         _playerFight.OnEnemyEntersTrigger += StartFightAnimation;
         _playerFight.OnEnemyExitsTrigger += EndStartAnimation;
+        //_playerRagdoll.OnFall += () => _playerAnimator.SetBool(IS_HITTED, true);
+        _playerRagdoll.OnFall += Fall;
+        _playerRagdoll.OnStandedUp += StandUp;
+        //_playerRagdoll.OnStandedUp += () => _playerAnimator.SetBool(IS_HITTED, false);
     }
 
     private void FixedUpdate()
     {
         SetRunningAnimation(_touchController.GetTouchPosition);
+    }
+
+    private void Start()
+    {
+
+    }
+
+    private void Fall()
+    {
+        //Invoke(nameof(Stand), 3.5f);
+        _playerAnimator.Play("Empty");
+        _playerAnimator.SetLayerWeight(2, 0);
+        print($"ANIMATOR: {_playerAnimator.GetLayerWeight(2)}");
+        _playerAnimator.enabled = false;
+
+        //Invoke(nameof(EnableAnim), 1f);
+    }
+
+    private void EnableAnim() => _playerAnimator.enabled = true;
+
+    private void StandUp()
+    {
+        // _playerAnimator.SetLayerWeight(2, 0);
+        //_playerAnimator.SetLayerWeight(2, 0);
+
+        //Invoke(nameof(Stand), 0.5f);
+        Stand();
+    }
+
+    private void a()
+    {
+
+    }
+
+    public void Stand()
+    {
+        float weight = 0f;
+        _playerAnimator.enabled = true;
+
+        //_playerAnimator.SetTrigger("Stand");
+        _playerAnimator.CrossFade("Add.Idle2", 0, 2, 0.5f);
+        DOTween.To(() => weight, x => weight = x, 1, _playerRagdoll.StandUpDuration).OnUpdate(() => _playerAnimator.SetLayerWeight(2, weight));//.OnComplete(() => _playerRagdoll.OnStandedUp?.Invoke());
     }
 
     public void GetHit()

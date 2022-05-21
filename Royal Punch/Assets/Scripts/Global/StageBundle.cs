@@ -13,4 +13,9 @@ public class StageBundle : ScriptableObject
     }
 
     public int Count => _stages.Count;
+
+    public bool IsLastStage(int stageOrder)
+    {
+        return stageOrder == _stages.Count;
+    }
 }
