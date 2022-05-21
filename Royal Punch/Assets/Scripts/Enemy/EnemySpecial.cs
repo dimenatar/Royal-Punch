@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class EnemySpecial : MonoBehaviour
 {
-    [SerializeField] private PlayerMovement _player;
+    [SerializeField] private PlayerMovement _playerMovement;
+    [SerializeField] private Character _player;
     [SerializeField] private Transform _playerTransform;
 
     [SerializeField] private Timer _timerBetweenSpecialAttacks;
@@ -16,6 +17,7 @@ public class EnemySpecial : MonoBehaviour
     [SerializeField] private SpecialAttackTrigger _splash;
     [SerializeField] private SpecialAttackTrigger _stream;
 
+    [SerializeField] private float _hitPlayerForce = 2;
     [SerializeField] private float _draggingDuration = 2;
     [SerializeField] private float _draggingPlayerForce = 1;
     [SerializeField] private float _delayBetweenSpecialAttacks = 1;
@@ -89,7 +91,7 @@ public class EnemySpecial : MonoBehaviour
     {
         if (_splash.IsPlayerInTrigger)
         {
-            print("SPLASH");
+            _player.GetSpecialHit(transform.position - _playerTransform.position, _hitPlayerForce);
         }
         OnSpecialAttackEnded?.Invoke();
     }
@@ -98,7 +100,7 @@ public class EnemySpecial : MonoBehaviour
     {
         if (_stream.IsPlayerInTrigger)
         {
-            print("IS IN SPLASH");
+            _player.GetSpecialHit(transform.position - _playerTransform.position, _hitPlayerForce);
         }
         OnSpecialAttackEnded?.Invoke();
     }
@@ -108,14 +110,14 @@ public class EnemySpecial : MonoBehaviour
         StopCoroutine(nameof(StartDraggingPlayer));
         _isInSpecialAttack = false;
         OnSpecialAttackEnded?.Invoke();
-        _player.DraggingForce = Vector3.zero;
+        _playerMovement.DraggingForce = Vector3.zero;
     }
 
     private IEnumerator StartDraggingPlayer()
     {
         while (true)
         {
-            _player.DraggingForce = (transform.position - _playerTransform.position).normalized * _draggingPlayerForce;
+            _playerMovement.DraggingForce = (transform.position - _playerTransform.position).normalized * _draggingPlayerForce;
             yield return null;
         }
     }

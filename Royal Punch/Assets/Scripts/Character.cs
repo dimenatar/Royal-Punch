@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
+    [SerializeField] private Ragdoll _ragdoll;
+    [SerializeField] private Rigidbody _rigidbody;
+
     private int _health;
     private int _maxHealth;
 
@@ -39,4 +42,14 @@ public class Character : MonoBehaviour
     {
         Health -= damage;
     }
+
+    public void GetSpecialHit(Vector3 direction, float force)
+    {
+        //print($"{-transform.forward * 300} {gameObject.name}");
+        //_rigidbody.AddExplosionForce(100000, transform.position, 50);
+        //Invoke(nameof(Fall), 1f);
+        _ragdoll.Fall();
+    }
+
+    private void Fall() => _ragdoll.Fall();
 }
