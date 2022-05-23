@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class UserMoney : MonoBehaviour
 {
+    [SerializeField] private float _rewardFactor;
+
     private int _money;
 
     public int Money { get => _money; private set
@@ -32,5 +34,10 @@ public class UserMoney : MonoBehaviour
         {
             Money -= amount;
         }
+    }
+
+    public int CalculateReward(Character enemy)
+    {
+        return (int)((enemy.MaxHealth - enemy.Health) * _rewardFactor);
     }
 }

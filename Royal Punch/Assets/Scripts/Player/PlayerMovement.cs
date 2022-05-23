@@ -26,14 +26,15 @@ public class PlayerMovement : MonoBehaviour
         _player.velocity = SetVelocityBasedOnRotation(ConvertYVelocityToZ(_controller.GetTouchPosition)) + DraggingForce;
 
         _playerTransform.LookAt(_enemy);
+        _playerTransform.eulerAngles = new Vector3(0, _playerTransform.eulerAngles.y, 0);
     }
 
     private Vector3 ConvertYVelocityToZ(Vector2 touchPos) => new Vector3(touchPos.x, 0, touchPos.y);
 
     private Vector3 SetVelocityBasedOnRotation(Vector3 direction)
     {
-        Vector3 forward = _playerTransform.forward * direction.z * _speed;
-        Vector3 side = _playerTransform.right * direction.x * _speed;
+        Vector3 forward = _speed * direction.z * _playerTransform.forward;
+        Vector3 side = _speed * direction.x * _playerTransform.right;
         return forward + side;
     }
 

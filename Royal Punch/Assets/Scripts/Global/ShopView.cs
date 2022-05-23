@@ -24,15 +24,36 @@ public class ShopView : MonoBehaviour
         DisplayUpgrades();
     }
 
-    private void DisplayUpgrades()
+    public void DisplayUpgrades()
     {
+        DisplayHealth();
+        DisplayDamage();
+    }
 
+    public void HealthClick()
+    {
+        if (_upgradeBundle.IsLastHealthUpgrade(_healthUpgradeManager.HealthUpgrade.Order - 1)) return;
+        if (_userMoney.IsEnoughtMoney(_healthUpgradeManager.HealthUpgrade.PriceToNext))
+        {
+            _userMoney.ReduceMoney(_healthUpgradeManager.HealthUpgrade.PriceToNext);
+            _healthUpgradeManager.HealthUpgrade = _upgradeBundle.GetHealth(_healthUpgradeManager.HealthUpgrade.Order);
+            DisplayUpgrades();
+        }
+    }
 
-
-        //check if user has money for each upgrage, if not - cover up upgrade
-
-
-
+    public void DamageClick()
+    {
+        if (_upgradeBundle.IsLastDamageUpgrade(_damageUpgradeManager.CurrentUpgrade.Order - 1)) return;
+        if (_userMoney.IsEnoughtMoney(_damageUpgradeManager.CurrentUpgrade.PriceToNext))
+        {
+            _userMoney.ReduceMoney(_damageUpgradeManager.CurrentUpgrade.PriceToNext);
+            _damageUpgradeManager.CurrentUpgrade = _upgradeBundle.GetDamage(_damageUpgradeManager.CurrentUpgrade.Order);
+            DisplayUpgrades();
+        }
+        else
+        {
+            _damageNotEnoughtMoney.gameObject.SetActive(true);
+        }
     }
 
     private void DisplayHealth()
@@ -41,10 +62,20 @@ public class ShopView : MonoBehaviour
         {
             _healthLevel.text = $"LV. {_healthUpgradeManager.HealthUpgrade.Order}";
             _healthPrice.text = _healthUpgradeManager.HealthUpgrade.PriceToNext.ToString();
-        }
-        if (!_userMoney.IsEnoughtMoney(_healthUpgradeManager.HealthUpgrade.PriceToNext))
-        {
 
+            if (!_userMoney.IsEnoughtMoney(_healthUpgradeManager.HealthUpgrade.PriceToNext))
+            {
+                _healthNotEnoghtMoney.gameObject.SetActive(true);
+            }
+            else
+            {
+                _healthNotEnoghtMoney.gameObject.SetActive(false);
+            }
+        }
+        else
+        {
+            _healthLevel.text = $"LV. MAX";
+            _healthPrice.gameObject.SetActive(false);
         }
     }
 
@@ -52,45 +83,22 @@ public class ShopView : MonoBehaviour
     {
         if (!_upgradeBundle.IsLastDamageUpgrade(_damageUpgradeManager.CurrentUpgrade.Order - 1))
         {
+            _damageLevel.text = $"LV. {_damageUpgradeManager.CurrentUpgrade.Order}";
+            _damagePrice.text = _damageUpgradeManager.CurrentUpgrade.PriceToNext.ToString();
 
-        }
-
-        _damageLevel.text = $"LV. {_damageUpgradeManager.CurrentUpgrade.Order}";
-        _damagePrice.text = _damageUpgradeManager.CurrentUpgrade.PriceToNext.ToString();
-
-        if (!_userMoney.IsEnoughtMoney(_damageUpgradeManager.CurrentUpgrade.PriceToNext))
-        {
-
-        }
-    }
-
-    public void HealthClick()
-    {
-        if (_userMoney.IsEnoughtMoney(_healthUpgradeManager.HealthUpgrade.PriceToNext))
-        {
-            _userMoney.ReduceMoney(_healthUpgradeManager.HealthUpgrade.PriceToNext);
-
-            //if ugrage isn't last, we display next stage of it
-            if (!_upgradeBundle.IsLastHealthUpgrade(_healthUpgradeManager.HealthUpgrade.Order - 1))
+            if (!_userMoney.IsEnoughtMoney(_damageUpgradeManager.CurrentUpgrade.PriceToNext))
             {
-                _healthUpgradeManager.HealthUpgrade = _upgradeBundle.GetHealth(_healthUpgradeManager.HealthUpgrade.Order);
+                _damageNotEnoughtMoney.gameObject.SetActive(true);
             }
-            DisplayHealth();
-        }
-    }
-
-    public void DamageClick()
-    {
-        if (_userMoney.IsEnoughtMoney(_damageUpgradeManager.CurrentUpgrade.PriceToNext))
-        {
-            _userMoney.ReduceMoney(_damageUpgradeManager.CurrentUpgrade.PriceToNext);
-
-            //if ugrage isn't last, we display next stage of it
-            if (!_upgradeBundle.IsLastDamageUpgrade(_damageUpgradeManager.CurrentUpgrade.Order - 1))
+            else
             {
-                _damageUpgradeManager.CurrentUpgrade = _upgradeBundle.GetDamage(_damageUpgradeManager.CurrentUpgrade.Order);
+                _damageNotEnoughtMoney.gameObject.SetActive(false);
             }
-            DisplayDamage();
+        }
+        else
+        {
+            _damageLevel.text = $"LV. MAX";
+            _damagePrice.gameObject.SetActive(false);
         }
     }
 }

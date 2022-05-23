@@ -8,7 +8,14 @@ public class LevelStageController : MonoBehaviour
 
     private Stage _currentStage;
 
-    public Stage CurrentStage { get => _currentStage; private set
+    public Stage CurrentStage {
+        get
+        {
+            if (_currentStage != null)
+                return _currentStage;
+            else return _stages[0];
+        }
+        private set
         {
             _currentStage = value;
             OnStageChanged?.Invoke(_currentStage.StageOrder);
@@ -28,7 +35,7 @@ public class LevelStageController : MonoBehaviour
     {
         if (!_stages.IsLastStage(_currentStage.StageOrder))
         {
-            _currentStage = _stages[_currentStage.StageOrder];
+            CurrentStage = _stages[_currentStage.StageOrder];
         }
     }
 }

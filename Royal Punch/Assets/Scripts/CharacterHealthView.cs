@@ -32,6 +32,8 @@ public class CharacterHealthView : MonoBehaviour
     {
         _timer.OnTime += ReduceYellowBar;
         _character.OnHealthChanged += UpdateHealth;
+        _character.OnInitialised += Initialise;
+        _character.OnDied += () => _healthBar.SetActive(false);
     }
 
     private void Start()
@@ -42,9 +44,17 @@ public class CharacterHealthView : MonoBehaviour
         _healthRect = _health.GetComponent<RectTransform>();
     }
 
+    public void Initialise(int startHealth)
+    {
+        _health.text = startHealth.ToString();
+        _mainSlide.fillAmount = 1;
+        _additionalSlide.fillAmount = 1;
+        _healthBar.SetActive(true);
+    }
+
     private void UpdateHealth(int value)
     {
-        _healthRect.DOScale(_animatedHealthScale, _timeToScaleText).OnComplete(() => _healthRect.DOScale(_startHealthScale, _timeToUnscaleText));
+        //_healthRect.DOScale(_animatedHealthScale, _timeToScaleText).OnComplete(() => _healthRect.DOScale(_startHealthScale, _timeToUnscaleText));
         _health.text = value.ToString();
         _mainSlide.fillAmount = (float)value / _character.MaxHealth;
         if (!_timer.IsStarted)

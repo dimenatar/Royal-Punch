@@ -101,7 +101,7 @@ public class EnemySpecial : MonoBehaviour
     {
         if (_splash.IsPlayerInTrigger)
         {
-            _player.GetSpecialHit(transform.position - _playerTransform.position, _hitPlayerForce);
+            _player.GetSpecialHit(_hitPlayerForce);
         }
         OnSpecialAttackEnded?.Invoke();
     }
@@ -110,7 +110,7 @@ public class EnemySpecial : MonoBehaviour
     {
         if (_stream.IsPlayerInTrigger)
         {
-            _player.GetSpecialHit(transform.position - _playerTransform.position, _hitPlayerForce);
+            _player.GetSpecialHit(_hitPlayerForce);
         }
         OnSpecialAttackEnded?.Invoke();
     }

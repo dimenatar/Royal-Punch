@@ -8,10 +8,12 @@ public class UserData
     private Stage _stage;
     private HealthUpgrade _healthUpgrade;
     private DamageUpgrade _damageUpgrade;
+    private int _money = 500;
 
     public Stage Stage => _stage;
     public HealthUpgrade HealthUpgrade => _healthUpgrade;   
     public DamageUpgrade DamageUpgrade => _damageUpgrade;
+    public int Money => _money;
 
     public UserData()
     {
@@ -21,10 +23,11 @@ public class UserData
     }
 
 
-    public void SaveData(Stage stage, HealthUpgrade healthUpgrade, DamageUpgrade damageUpgrade)
+    public void SaveData(Stage stage, HealthUpgrade healthUpgrade, DamageUpgrade damageUpgrade, int money)
     {
         _stage = stage;
         _healthUpgrade = healthUpgrade;
         _damageUpgrade = damageUpgrade;
+        _money = money;
     }
 }

@@ -12,12 +12,13 @@ public class Ragdoll : MonoBehaviour
     [SerializeField] private bool _isStangingAfterFalling = true;
 
     [SerializeField] private Collider[] _mainColliders;
-    [SerializeField] private Rigidbody _hip;
+    [SerializeField] private Rigidbody _head;
 
     [SerializeField] private Transform _player;
     [SerializeField] private Rigidbody _rigidbodyToPunch;
 
     [SerializeField] private Transform _camera;
+    [SerializeField] private RagdollSaver _ragdollSaver;
 
     private bool _isFallen;
     private Rigidbody[] _rigidbodies;
@@ -27,13 +28,17 @@ public class Ragdoll : MonoBehaviour
     private Vector3 _startPos;
     private Vector3 _endPos;
     private bool _isFollowing;
+    private float _timer = 0;
+
+    private List<Vector3> _temp;
+    private List<Quaternion> _temp2;
 
     public bool IsFallen => _isFallen;
     public float StandUpDuration => _standUpDuration;
 
     public event Action OnFall;
     public event Action OnBeginStanding;
-    public Action OnStandedUp;
+    public event Action OnStandedUp;
 
     private void Awake()
     {
@@ -93,6 +98,14 @@ public class Ragdoll : MonoBehaviour
         //_rigidbodyToPunch.AddExplosionForce(500, transform.position + transform.forward, 50);
     }
 
+    public void Restore()
+    {
+        SetRigidbodyState(true);
+        SetColliderState(false);
+        _isFallen = false;
+        OnStandedUp?.Invoke();
+    }
+
     private void SetRigidbodyState(bool state)
     {
         Rigidbody[] rigidbodies;
@@ -103,7 +116,7 @@ public class Ragdoll : MonoBehaviour
             _isFoundRigids = true;
         }
         else rigidbodies = _rigidbodies;
-        SavePositions();
+        SavePositions(_rigidbodies);
         foreach (Rigidbody rigidbody in rigidbodies)
         {
             rigidbody.isKinematic = state;
@@ -124,14 +137,18 @@ public class Ragdoll : MonoBehaviour
         }
     }
 
-    private void SavePositions()
+    private void SavePositions(Rigidbody[] rigidbodies)
     {
-        _saveHipPos = _hip.transform.position;
+        _saveHipPos = _head.transform.localPosition;
+        _ragdollSaver.Rewrite();
+        foreach (var item in rigidbodies)
+        {
+            _ragdollSaver.WriteValue(new Bone(item.name, item.transform.position, item.transform.rotation));
+        }
     }
 
     private void ReturnValuesToStanded()
     {
-        print("Standart");
         SetRigidbodyState(true);
         SetColliderState(false);
        // _playerAnimator.enabled = true;
@@ -140,10 +157,75 @@ public class Ragdoll : MonoBehaviour
 
     private void BeginStanding()
     {
-        _isFollowing = false;
+
+        //_isFollowing = false;
         //transform.position += new Vector3(0, 0, (_endPos - _startPos).z);
         //_rigidbodyToPunch.transform.localPosition = _startPos;
-        _hip.DOMove(_saveHipPos, _standUpDuration).OnComplete(() => OnStandedUp?.Invoke());
-       // Invoke(nameof(ReturnValuesToStanded), 0.5f);
+        //_hip.DOMove(_saveHipPos, _standUpDuration).OnComplete(() => OnStandedUp?.Invoke());
+        // Invoke(nameof(ReturnValuesToStanded), 0.5f);
+
+
+
+
+        Vector3 headPos = _ragdollSaver.Bones.Where(b => b.Name == _head.name).FirstOrDefault().Position;
+
+        //_head.DOMove(headPos, 1f).OnComplete(() => RestoreBones());
+        StartCoroutine(nameof(LerpHead));
+    }
+
+    private void RestoreBones()
+    {
+        Collider[] colliders = GetComponentsInChildren<Collider>();
+        foreach (Collider collider in colliders)
+        {
+            collider.enabled = false;
+        }
+        foreach (Rigidbody rigidbody in _rigidbodies)
+        {
+            rigidbody.isKinematic = true;
+        }
+        StartCoroutine(nameof(Lerp));
+    }
+
+    private IEnumerator LerpHead()
+    {
+        _timer = 0;
+        Bone head = _ragdollSaver.Bones.Where(b => b.Name == _head.name).FirstOrDefault();
+        Vector3 startPoint = _head.transform.position;
+        while (_timer < _standUpDuration)
+        {
+            _head.transform.position = Vector3.Lerp(startPoint, new Vector3(_head.transform.position.x, head.Position.y, _head.transform.position.z), _timer / _standUpDuration);
+            _timer += Time.deltaTime;
+            yield return null;
+        }
+        RestoreBones();
+    }
+
+    private IEnumerator Lerp()
+    {
+        _temp = new List<Vector3>();
+        _temp2 = new List<Quaternion>();
+        //store currentPos
+
+        for (int i = 0; i < _rigidbodies.Length; i++)
+        {
+            _temp.Add(_rigidbodies[i].transform.position);
+            _temp2.Add(_rigidbodies[i].transform.rotation);
+        }
+
+        _timer = 0;
+        while (_timer < _standUpDuration)
+        {
+            for (int i = 0; i < _rigidbodies.Length; i ++)
+            {
+                //_rigidbodies[i].transform.SetPositionAndRotation(Vector3.Lerp(_temp[i], _ragdollSaver.Bones.Where(b => b.Name == _rigidbodies[i].name).FirstOrDefault().Position, _timer), Quaternion.Euler(Vector3.Lerp(_temp2[i].eulerAngles, _ragdollSaver.Bones.Where(b => b.Name == _rigidbodies[i].name).FirstOrDefault().Rotation.eulerAngles, _timer/_delayToStand)));
+                //_rigidbodies[i].transform.position = Vector3.Lerp(_temp[i], _ragdollSaver.Bones.Where(b => b.Name == _rigidbodies[i].name).FirstOrDefault().Position, _timer / _standUpDuration);
+                _rigidbodies[i].transform.SetPositionAndRotation(Vector3.Lerp(_temp[i], _ragdollSaver.Bones[i].Position, _timer/ _standUpDuration), 
+                    Quaternion.Euler(Vector3.Lerp(_temp2[i].eulerAngles, _ragdollSaver.Bones[i].Rotation.eulerAngles, _timer/ _standUpDuration)));
+                _timer += Time.deltaTime;
+                yield return null;
+            }
+        }
+        OnStandedUp?.Invoke();
     }
 }

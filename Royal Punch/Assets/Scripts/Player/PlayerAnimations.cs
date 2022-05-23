@@ -32,7 +32,7 @@ public class PlayerAnimations : MonoBehaviour
         _playerFight.OnEnemyExitsTrigger += EndStartAnimation;
         //_playerRagdoll.OnFall += () => _playerAnimator.SetBool(IS_HITTED, true);
         _playerRagdoll.OnFall += Fall;
-        _playerRagdoll.OnStandedUp += StandUp;
+        _playerRagdoll.OnStandedUp += EnableAnim;
         //_playerRagdoll.OnStandedUp += () => _playerAnimator.SetBool(IS_HITTED, false);
     }
 
@@ -48,45 +48,10 @@ public class PlayerAnimations : MonoBehaviour
 
     private void Fall()
     {
-        //Invoke(nameof(Stand), 3.5f);
-        _playerAnimator.Play("Empty");
-        _playerAnimator.SetLayerWeight(2, 0);
-        print($"ANIMATOR: {_playerAnimator.GetLayerWeight(2)}");
         _playerAnimator.enabled = false;
-
-        //Invoke(nameof(EnableAnim), 1f);
     }
 
     private void EnableAnim() => _playerAnimator.enabled = true;
-
-    private void StandUp()
-    {
-        // _playerAnimator.SetLayerWeight(2, 0);
-        //_playerAnimator.SetLayerWeight(2, 0);
-
-        //Invoke(nameof(Stand), 0.5f);
-        Stand();
-    }
-
-    private void a()
-    {
-
-    }
-
-    public void Stand()
-    {
-        float weight = 0f;
-        _playerAnimator.enabled = true;
-
-        //_playerAnimator.SetTrigger("Stand");
-        _playerAnimator.CrossFade("Add.Idle2", 0, 2, 0.5f);
-        DOTween.To(() => weight, x => weight = x, 1, _playerRagdoll.StandUpDuration).OnUpdate(() => _playerAnimator.SetLayerWeight(2, weight));//.OnComplete(() => _playerRagdoll.OnStandedUp?.Invoke());
-    }
-
-    public void GetHit()
-    {
-
-    }
 
     public void StartFightAnimation() => _playerAnimator.SetTrigger(START_FIGHT);
 

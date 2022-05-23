@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class HealthUpgrade : Upgrade
 {
-    [SerializeField] private int _health;
+    [SerializeField] private int _health = 100;
 
     public int Health => _health;
 }
