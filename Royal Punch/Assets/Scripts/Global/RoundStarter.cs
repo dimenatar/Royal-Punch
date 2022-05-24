@@ -18,6 +18,8 @@ public class RoundStarter : MonoBehaviour
     [SerializeField] private Character _player;
     [SerializeField] private Character _enemy;
 
+    [SerializeField] private TouchPosition _touchPosition;
+
     public event Action OnCameraMoved;
 
     private void Awake()
@@ -48,6 +50,8 @@ public class RoundStarter : MonoBehaviour
 
         _playerAnimator.SetTrigger("Start");
         _playerFight.Initialise(_damageUpgradeManager.CurrentUpgrade.Damage);
+
+        _touchPosition.Enabletouch();
        // _enemySpecial.Initialise();
     }
 }

@@ -23,6 +23,11 @@ public class EnemyAnimations : MonoBehaviour
         _enemySpecial.OnSpecialAttackPicked += SetSpecialAnim;
     }
 
+    public void ForceStop()
+    {
+        _enemyAnimator.Play("Empty");
+    }
+
     private void SetSpecialAnim(SpecialAttacks attack)
     {
         switch (attack)

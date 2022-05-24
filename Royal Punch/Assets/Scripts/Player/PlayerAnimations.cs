@@ -29,7 +29,7 @@ public class PlayerAnimations : MonoBehaviour
     private void Awake()
     {
         _playerFight.OnEnemyEntersTrigger += StartFightAnimation;
-        _playerFight.OnEnemyExitsTrigger += EndStartAnimation;
+        _playerFight.OnEnemyExitsTrigger += EndFightAnimation;
         //_playerRagdoll.OnFall += () => _playerAnimator.SetBool(IS_HITTED, true);
         _playerRagdoll.OnFall += Fall;
         _playerRagdoll.OnStandedUp += EnableAnim;
@@ -53,9 +53,19 @@ public class PlayerAnimations : MonoBehaviour
 
     private void EnableAnim() => _playerAnimator.enabled = true;
 
+    public void GoToMainIdle()
+    {
+        _playerAnimator.SetTrigger("Idle");
+    }
+
+    public void Win()
+    {
+        _playerAnimator.SetTrigger("Win");
+    }
+
     public void StartFightAnimation() => _playerAnimator.SetTrigger(START_FIGHT);
 
-    public void EndStartAnimation() => _playerAnimator.SetTrigger(END_FIGHT);
+    public void EndFightAnimation() => _playerAnimator.SetTrigger(END_FIGHT);
 
     private void SetRunningAnimation(Vector2 direction)
     {

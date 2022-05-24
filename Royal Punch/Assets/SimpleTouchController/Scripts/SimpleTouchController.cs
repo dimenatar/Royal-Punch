@@ -5,6 +5,7 @@ using System.Collections;
 
 public class SimpleTouchController : MonoBehaviour {
 
+	[SerializeField] private Camera _main;
 	// PUBLIC
 	public delegate void TouchDelegate(Vector2 value);
 	public event TouchDelegate TouchEvent;
@@ -13,13 +14,34 @@ public class SimpleTouchController : MonoBehaviour {
 	public event TouchStateDelegate TouchStateEvent;
 
 	// PRIVATE
-	[SerializeField]
-	private RectTransform joystickArea;
+	[SerializeField] private RectTransform joystickArea;
 	private bool touchPresent = false;
 	private Vector2 movementVector;
 
+	private bool _isDragging = false;
 
-	public Vector2 GetTouchPosition
+    private void Update()
+    {
+		print(Input.mousePosition + " " + joystickArea.localPosition);
+		
+		if (_isDragging)
+        {
+			var localPos = transform.InverseTransformPoint(Input.mousePosition) + new Vector3(200, -200, 0);
+			joystickArea.localPosition = new Vector2(Mathf.Clamp(localPos.x, 60, 320), Mathf.Clamp(localPos.y, -320, -60));
+			//joystickArea.position = Input.mousePosition;
+
+        }
+		else if (Input.GetMouseButtonDown(0))
+		{
+			_isDragging = true;
+		}
+		if (Input.GetMouseButtonUp(0))
+		{
+			_isDragging = false;
+		}
+	}
+
+    public Vector2 GetTouchPosition
 	{
 		get { return movementVector;}
 	}
@@ -28,19 +50,17 @@ public class SimpleTouchController : MonoBehaviour {
 	public void BeginDrag()
 	{
 		touchPresent = true;
-		if(TouchStateEvent != null)
-			TouchStateEvent(touchPresent);
-	}
+        TouchStateEvent?.Invoke(touchPresent);
+    }
 
 	public void EndDrag()
 	{
 		touchPresent = false;
 		movementVector = joystickArea.anchoredPosition = Vector2.zero;
 
-		if(TouchStateEvent != null)
-			TouchStateEvent(touchPresent);
+        TouchStateEvent?.Invoke(touchPresent);
 
-	}
+    }
 
 	public void OnValueChanged(Vector2 value)
 	{
@@ -50,11 +70,8 @@ public class SimpleTouchController : MonoBehaviour {
 			movementVector.x = ((1 - value.x) - 0.5f) * 2f;
 			movementVector.y = ((1 - value.y) - 0.5f) * 2f;
 
-			if(TouchEvent != null)
-			{
-				TouchEvent(movementVector);
-			}
-		}
+            TouchEvent?.Invoke(movementVector);
+        }
 
 	}
 

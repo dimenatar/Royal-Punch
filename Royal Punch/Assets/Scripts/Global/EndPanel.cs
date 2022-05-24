@@ -17,6 +17,7 @@ public class EndPanel : MonoBehaviour
     [SerializeField] private LevelResetter _levelResetter;
 
     private bool _isWin;
+    private int _reward;
 
     private void Awake()
     {
@@ -35,13 +36,16 @@ public class EndPanel : MonoBehaviour
         {
             _result.text = "FAIL!";
         }
-        _moneyText.text = _money.CalculateReward(_enemy).ToString();
-        Time.timeScale = 0;
+        _reward = _money.CalculateReward(_enemy);
+        _moneyText.text = _reward.ToString();
+        _panel.SetActive(true);
+       // Time.timeScale = 0;
     }
 
     public void ClaimClick()
     {
         HidePanel();
+        _money.AddMoney(_reward);
         _levelResetter.ResetLevel(_isWin);
     }
 

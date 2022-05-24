@@ -18,6 +18,12 @@ public class DataLoader : MonoBehaviour
     private void Awake()
     {
         LoadData();
+        
+        Application.quitting += SaveData;
+    }
+
+    private void Start()
+    {
         InitialiseControllers();
     }
 
@@ -27,7 +33,7 @@ public class DataLoader : MonoBehaviour
         if (_userData == null)
         {
             _userData = new UserData();
-            _userData.SaveData(_stageBundle[0], _upgradeBundle.HealthUpgrades[0], _upgradeBundle.DamageUpgrades[0], 50);
+            _userData.SaveData(_stageBundle[0], _upgradeBundle.HealthUpgrades[0], _upgradeBundle.DamageUpgrades[0], 100);
             UserProgressManager.SaveUserData(_userData);
         }
     }
@@ -37,6 +43,7 @@ public class DataLoader : MonoBehaviour
         _stageController.Initialise(_userData.Stage);
         _healthManager.Initialise(_userData.HealthUpgrade);
         _damageManager.Initialise(_userData.DamageUpgrade);
+        print(_userData.Money);
         _userMoney.Initialise(_userData.Money);
     }
 

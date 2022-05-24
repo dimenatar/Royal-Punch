@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Character : MonoBehaviour
@@ -34,6 +35,11 @@ public class Character : MonoBehaviour
                 OnDied?.Invoke();
             }
         }
+    }
+
+    private void Awake()
+    {
+        OnDied += () => GetComponents<Collider>().ToList().ForEach(collider => collider.enabled = false);
     }
 
     public void Initialise(int health)

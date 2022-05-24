@@ -28,6 +28,8 @@ public class PlayerFight : MonoBehaviour
     public void ForceReset()
     {
         StopCoroutine(nameof(HitEnemy));
+        _enemy.GetComponent<EnemyFight>().IsInTriggerWithPlayer = false;
+        OnEnemyExitsTrigger?.Invoke();
     }
 
     private void OnTriggerEnter(Collider other)

@@ -19,8 +19,11 @@ public class LevelResetter : MonoBehaviour
     [SerializeField] private EndPanel _endPanel;
     [SerializeField] private Animator _camera;
 
+    [SerializeField] private PlayerAnimations _playerAnimations;
+
     public void ResetLevel(bool win)
     {
+        _playerAnimations.GoToMainIdle();
         _camera.SetTrigger("Out");
         if (!win)
         {
@@ -30,9 +33,13 @@ public class LevelResetter : MonoBehaviour
         {
             _enemy.RestoreRagdoll();
         }
-        //_playerAnimator.Play("Idle");
-        //_playerFight.ForceReset();
         _playerTransform.position = _playerStartPoint.position;
 
+        Invoke(nameof(ShowUI), 1);
+    }
+
+    private void ShowUI()
+    {
+        _UIElementsToShow.ForEach(element => element.SetActive(true));
     }
 }
