@@ -27,4 +27,7 @@ public class FollowPlayer : MonoBehaviour
         }
     }
 
+    public void StopFollowing() => _isFollowing = false;
+    public void StartFollowing() => _isFollowing = true;
+
 }

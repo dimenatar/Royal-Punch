@@ -11,6 +11,11 @@ public class TouchPosition : MonoBehaviour
     private bool _isShown;
     private bool _isHolding;
 
+    private void Start()
+    {
+        _controller.gameObject.SetActive(false);
+    }
+
     private void Update()
     {
         if (_isShown)

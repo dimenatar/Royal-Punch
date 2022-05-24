@@ -48,6 +48,7 @@ public class EnemyFight : MonoBehaviour
 
     public void StartFightWithPlayer()
     {
+        print("START FIGHT");
         if (!_enemySpecial.IsInSpecialAttack)
         {
             _isInFight = true;

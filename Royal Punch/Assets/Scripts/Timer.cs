@@ -37,7 +37,10 @@ public class Timer : MonoBehaviour
             {
                 OnTime?.Invoke();
                 if (!_isRepeating)
-                _time = 0;
+                {
+                    _time = 0;
+                    _isStarted = false;
+                }
             }
             else
             {

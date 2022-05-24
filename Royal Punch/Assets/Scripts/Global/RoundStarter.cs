@@ -7,6 +7,9 @@ public class RoundStarter : MonoBehaviour
 {
     [SerializeField] private Animator _camera;
     [SerializeField] private Animator _playerAnimator;
+    [SerializeField] private Animator _enemyAnimator;
+    [SerializeField] private Animator _specialsAnimator;
+
     [SerializeField] private EnemySpecial _enemySpecial;
     [SerializeField] private List<GameObject> _UIElementsToHide;
 
@@ -19,6 +22,7 @@ public class RoundStarter : MonoBehaviour
     [SerializeField] private Character _enemy;
 
     [SerializeField] private TouchPosition _touchPosition;
+    [SerializeField] private GameObject _touchable;
 
     public event Action OnCameraMoved;
 
@@ -36,6 +40,7 @@ public class RoundStarter : MonoBehaviour
 
     public void RotateCamera()
     {
+        _touchable.SetActive(false);
         _camera.SetTrigger("In");
         _UIElementsToHide.ForEach(element => element.SetActive(false));
         Invoke(nameof(CameraRotated), 1);
@@ -45,6 +50,8 @@ public class RoundStarter : MonoBehaviour
 
     public void StartRound()
     {
+        print("START ROUND");
+
         _player.Initialise(_healthUpgradeManager.HealthUpgrade.Health);
         _enemy.Initialise(_levelStageController.CurrentStage.EnemyHealth);
 
@@ -52,6 +59,9 @@ public class RoundStarter : MonoBehaviour
         _playerFight.Initialise(_damageUpgradeManager.CurrentUpgrade.Damage);
 
         _touchPosition.Enabletouch();
-       // _enemySpecial.Initialise();
+        _enemySpecial.Initialise();
+
+        _enemyAnimator.enabled = true;
+        _specialsAnimator.enabled = true;
     }
 }

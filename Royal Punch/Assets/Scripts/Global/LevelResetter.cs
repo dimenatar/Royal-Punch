@@ -16,13 +16,15 @@ public class LevelResetter : MonoBehaviour
 
     [SerializeField] private PlayerFight _playerFight;
 
-    [SerializeField] private EndPanel _endPanel;
     [SerializeField] private Animator _camera;
 
     [SerializeField] private PlayerAnimations _playerAnimations;
+    [SerializeField] private GameObject _touchable;
 
     public void ResetLevel(bool win)
     {
+        print("RESET");
+      
         _playerAnimations.GoToMainIdle();
         _camera.SetTrigger("Out");
         if (!win)
@@ -41,5 +43,6 @@ public class LevelResetter : MonoBehaviour
     private void ShowUI()
     {
         _UIElementsToShow.ForEach(element => element.SetActive(true));
+        _touchable.SetActive(true);
     }
 }

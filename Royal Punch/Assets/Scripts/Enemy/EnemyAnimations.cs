@@ -14,6 +14,10 @@ public class EnemyAnimations : MonoBehaviour
     private const string DRAGGING_ATTACK = "Dragging";
     private const string START_ATTACK = "StartFight";
     private const string END_ATTACK = "EndFight";
+
+    private const string TO_IDLE = "FromTiredToIdle";
+    private const string END_DRAGGING = "DraggingToTired";
+
     #endregion
 
     private void Awake()
@@ -21,11 +25,19 @@ public class EnemyAnimations : MonoBehaviour
         _enemyFight.OnStartFight += () => _enemyAnimator.SetTrigger(START_ATTACK);
         _enemyFight.OnEndFight += () => _enemyAnimator.SetTrigger(END_ATTACK);
         _enemySpecial.OnSpecialAttackPicked += SetSpecialAnim;
+        _enemySpecial.OnSpecialAttackEnded += () => Invoke(nameof(TranslateFromTiredToIdle), _enemySpecial.TiredDuration);
+        _enemySpecial.OnDraggingForceStopped += ForceStopSpecial;
     }
 
     public void ForceStop()
     {
         _enemyAnimator.Play("Empty");
+    }
+
+    public void ForceStopSpecial()
+    {
+        print("FORCE STOP SPECIAL");
+        _enemyAnimator.Play("Idle", 1);
     }
 
     private void SetSpecialAnim(SpecialAttacks attack)
@@ -40,6 +52,7 @@ public class EnemyAnimations : MonoBehaviour
             case SpecialAttacks.Dragging:
                 {
                     _enemyAnimator.SetTrigger(DRAGGING_ATTACK);
+                    Invoke(nameof(TranslateToTired), _enemySpecial.DraggingDuration);
                     break;
                 }
             case SpecialAttacks.SplashArea:
@@ -48,5 +61,15 @@ public class EnemyAnimations : MonoBehaviour
                     break;
                 }
         }
+    }
+
+    private void TranslateToTired()
+    {
+        _enemyAnimator.SetTrigger(END_DRAGGING);
+    }
+
+    private void TranslateFromTiredToIdle()
+    {
+        _enemyAnimator.SetTrigger(TO_IDLE);
     }
 }

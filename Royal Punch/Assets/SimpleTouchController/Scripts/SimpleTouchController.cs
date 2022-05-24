@@ -3,7 +3,8 @@ using UnityEngine.UI;
 using System.Collections;
 
 
-public class SimpleTouchController : MonoBehaviour {
+public class SimpleTouchController : MonoBehaviour 
+{
 
 	[SerializeField] private Camera _main;
 	// PUBLIC
@@ -22,8 +23,6 @@ public class SimpleTouchController : MonoBehaviour {
 
     private void Update()
     {
-		print(Input.mousePosition + " " + joystickArea.localPosition);
-		
 		if (_isDragging)
         {
 			var localPos = transform.InverseTransformPoint(Input.mousePosition) + new Vector3(200, -200, 0);
@@ -31,14 +30,6 @@ public class SimpleTouchController : MonoBehaviour {
 			//joystickArea.position = Input.mousePosition;
 
         }
-		else if (Input.GetMouseButtonDown(0))
-		{
-			_isDragging = true;
-		}
-		if (Input.GetMouseButtonUp(0))
-		{
-			_isDragging = false;
-		}
 	}
 
     public Vector2 GetTouchPosition
@@ -49,12 +40,14 @@ public class SimpleTouchController : MonoBehaviour {
 
 	public void BeginDrag()
 	{
+		_isDragging = true;
 		touchPresent = true;
         TouchStateEvent?.Invoke(touchPresent);
     }
 
 	public void EndDrag()
 	{
+		_isDragging = false;
 		touchPresent = false;
 		movementVector = joystickArea.anchoredPosition = Vector2.zero;
 

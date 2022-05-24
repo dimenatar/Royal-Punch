@@ -12,8 +12,12 @@ public class RoundResult : MonoBehaviour
 
     [SerializeField] private EnemyFight _enemyFight;
     [SerializeField] private PlayerFight _playerFight;
+    [SerializeField] private EnemySpecial _enemySpecial;
 
     [SerializeField] private TouchPosition _touchPosition;
+
+    [SerializeField] private Animator _enemyAnimator;
+    [SerializeField] private Animator _specialAnimator;
 
     private void Awake()
     {
@@ -23,6 +27,10 @@ public class RoundResult : MonoBehaviour
 
     private void EndRound(bool win)
     {
+        _enemySpecial.StopSpecials();
+        _enemyAnimator.enabled = false;
+        _specialAnimator.enabled = false;
+
         _touchPosition.DisalbeTouch();
         if (win)
         {

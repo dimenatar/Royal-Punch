@@ -55,7 +55,7 @@ public class PlayerAnimations : MonoBehaviour
 
     public void GoToMainIdle()
     {
-        _playerAnimator.SetTrigger("Idle");
+        _playerAnimator.SetTrigger("Idle1");
     }
 
     public void Win()
