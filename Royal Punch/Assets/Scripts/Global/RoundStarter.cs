@@ -24,6 +24,8 @@ public class RoundStarter : MonoBehaviour
     [SerializeField] private TouchPosition _touchPosition;
     [SerializeField] private GameObject _touchable;
 
+
+
     public event Action OnCameraMoved;
 
     private void Awake()

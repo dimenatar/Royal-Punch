@@ -7,6 +7,7 @@ public class EnemyAnimations : MonoBehaviour
     [SerializeField] private Animator _enemyAnimator;
     [SerializeField] private EnemySpecial _enemySpecial;
     [SerializeField] private EnemyFight _enemyFight;
+    [SerializeField] private Character _enemy;
 
     #region Enemy const animations
     private const string STREAM_ATTACK = "Stream";
@@ -25,8 +26,10 @@ public class EnemyAnimations : MonoBehaviour
         _enemyFight.OnStartFight += () => _enemyAnimator.SetTrigger(START_ATTACK);
         _enemyFight.OnEndFight += () => _enemyAnimator.SetTrigger(END_ATTACK);
         _enemySpecial.OnSpecialAttackPicked += SetSpecialAnim;
-        _enemySpecial.OnSpecialAttackEnded += () => Invoke(nameof(TranslateFromTiredToIdle), _enemySpecial.TiredDuration);
+        //_enemySpecial.OnSpecialAttackEnded += () => Invoke(nameof(TranslateFromTiredToIdle), _enemySpecial.TiredDuration);
+        _enemySpecial.OnSpecialAttackEnded += TranslateFromTiredToIdle;
         _enemySpecial.OnDraggingForceStopped += ForceStopSpecial;
+        _enemy.OnDied += ResetTriggers;
     }
 
     public void ForceStop()
@@ -38,6 +41,13 @@ public class EnemyAnimations : MonoBehaviour
     {
         print("FORCE STOP SPECIAL");
         _enemyAnimator.Play("Idle", 1);
+    }
+
+    public void ResetTriggers()
+    {
+        _enemyAnimator.ResetTrigger(STREAM_ATTACK);
+        _enemyAnimator.ResetTrigger(SPLASH_ATTACK);
+        _enemyAnimator.ResetTrigger(DRAGGING_ATTACK);
     }
 
     private void SetSpecialAnim(SpecialAttacks attack)

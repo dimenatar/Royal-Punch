@@ -19,6 +19,12 @@ public class RoundResult : MonoBehaviour
     [SerializeField] private Animator _enemyAnimator;
     [SerializeField] private Animator _specialAnimator;
 
+    [SerializeField] private GameObject _anim1;
+    [SerializeField] private GameObject _anim2;
+    [SerializeField] private GameObject _playerHealthBar;
+
+    [SerializeField] private LevelStageController _levelStageController;
+
     private void Awake()
     {
         _enemy.OnDied += EnemyDied;
@@ -30,11 +36,16 @@ public class RoundResult : MonoBehaviour
         _enemySpecial.StopSpecials();
         _enemyAnimator.enabled = false;
         _specialAnimator.enabled = false;
+        _anim1.SetActive(false);
+        _anim2.SetActive(false);
+
+        _playerHealthBar.SetActive(false);
 
         _touchPosition.DisalbeTouch();
         if (win)
         {
             _playerAnimations.Win();
+            _levelStageController.UpgrageStage();
         }
         else
         {

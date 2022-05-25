@@ -27,12 +27,14 @@ public class EnemySpecial : MonoBehaviour
     [SerializeField] private float _tiredDuration = 5;
 
     [Header("Attack's damage")]
-    [SerializeField] private int _streamDamage = 40;
     [SerializeField] private int _splashDamage = 20;
+    [SerializeField] private int _streamDamage = 40;
+    [SerializeField] private int _knockDamage = 60;
 
     private bool _isInSpecialAttack;
     private bool _isDragging;
 
+    public bool IsDragging => _isDragging;
     public bool IsInSpecialAttack => _isInSpecialAttack;
     public float DelayBetweenAttackPickedAndApplied => _delayBetweenAttackPickedAndApplied;
     public float DraggingDuration => _draggingDuration;
@@ -80,7 +82,7 @@ public class EnemySpecial : MonoBehaviour
             OnSpecialAttackPicked?.Invoke(attack);
         }
         else
-        _timerBetweenSpecialAttacks.UpdateTimer();
+        _timerBetweenSpecialAttacks.StartTimer();
     }
 
     private void StartAttack(SpecialAttacks attack)
@@ -154,15 +156,16 @@ public class EnemySpecial : MonoBehaviour
 
     private void CallSpecialEnded()
     {
+        print("ON SPECIAL ENDED");
         OnSpecialAttackEnded?.Invoke();
     }
 
     //if we start fight with player
     private void ForceStopDragging()
     {
-        print("FORCE STOP DRAGGING");
         if (_isDragging)
         {
+            print("FORCE STOP DRAGGING");
             StopCoroutine(nameof(StartDraggingPlayer));
             OnDraggingForceStopped?.Invoke();
             _playerMovement.DraggingForce = Vector3.zero;

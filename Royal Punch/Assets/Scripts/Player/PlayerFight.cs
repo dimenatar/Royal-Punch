@@ -8,16 +8,21 @@ public class PlayerFight : MonoBehaviour
     [SerializeField] private float _delayToHit;
     [SerializeField] private Character _enemy;
     [SerializeField] private Character _player;
+    [SerializeField] private EnemyFight _enemyFight;
+    [SerializeField] private Ragdoll _playerRagdoll;
 
     public event Action OnEnemyEntersTrigger;
     public event Action OnEnemyExitsTrigger;
 
+    private bool _isInFight;
     private int _damage;
 
     private void Awake()
     {
         OnEnemyEntersTrigger += () => StartCoroutine(nameof(HitEnemy));
         OnEnemyExitsTrigger += () => StopCoroutine(nameof(HitEnemy));
+        _player.OnHitted += () => StopFight();
+        _playerRagdoll.OnStandedUp += StartFight;
     }
 
     public void Initialise(int damage)
@@ -34,11 +39,13 @@ public class PlayerFight : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<EnemyFight>())
+        if (other.GetComponent<EnemyFight>() && !_player.IsHitted && !_isInFight)
+        {
+            StartFight();
+        }
+        else if (other.GetComponent<EnemyFight>() && _player.IsHitted)
         {
             other.GetComponent<EnemyFight>().IsInTriggerWithPlayer = true;
-            other.GetComponent<EnemyFight>().StartFightWithPlayer();
-            OnEnemyEntersTrigger?.Invoke();
         }
     }
 
@@ -46,9 +53,28 @@ public class PlayerFight : MonoBehaviour
     {
         if (other.GetComponent<EnemyFight>())
         {
-            other.GetComponent<EnemyFight>().IsInTriggerWithPlayer = false;
-            other.GetComponent<EnemyFight>().StopFightWithPlayer();
+            StopFight();
+        }
+    }
+
+    private void StartFight()
+    {
+        print("START FIGHT");
+        _enemyFight.GetComponent<EnemyFight>().IsInTriggerWithPlayer = true;
+        _enemyFight.GetComponent<EnemyFight>().StartFightWithPlayer();
+        OnEnemyEntersTrigger?.Invoke();
+        _isInFight = true;
+    }
+
+    private void StopFight()
+    {
+        if (_isInFight)
+        {
+            print("END FIGHT");
+            _enemyFight.IsInTriggerWithPlayer = false;
+            _enemyFight.StopFightWithPlayer();
             OnEnemyExitsTrigger?.Invoke();
+            _isInFight = false;
         }
     }
 
@@ -56,10 +82,7 @@ public class PlayerFight : MonoBehaviour
     {
         while (true)
         {
-            if (!_player.IsHitted)
-            {
-                _enemy.TakeDamage(_damage);
-            }
+            _enemy.TakeDamage(_damage);
             yield return new WaitForSeconds(_delayToHit);
         }
     }

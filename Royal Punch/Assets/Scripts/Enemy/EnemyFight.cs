@@ -48,8 +48,7 @@ public class EnemyFight : MonoBehaviour
 
     public void StartFightWithPlayer()
     {
-        print("START FIGHT");
-        if (!_enemySpecial.IsInSpecialAttack)
+        if (!_enemySpecial.IsInSpecialAttack && !_enemySpecial.IsDragging)
         {
             _isInFight = true;
             OnStartFight?.Invoke();
@@ -68,7 +67,7 @@ public class EnemyFight : MonoBehaviour
 
     private void TryStartFightWithPlayer()
     {
-        if (IsInTriggerWithPlayer && !_isInFight)
+        if (IsInTriggerWithPlayer && !_isInFight && !_enemySpecial.IsDragging)
         {
             StartFightWithPlayer();
         }

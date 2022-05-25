@@ -18,6 +18,7 @@ public class Character : MonoBehaviour
     public event HealthChanged OnHealthChanged;
     public event HealthChanged OnInitialised;
     public event Action OnDied;
+    public event Action OnHitted;
 
     public bool IsHitted => _isHitted;
 
@@ -40,6 +41,7 @@ public class Character : MonoBehaviour
     private void Awake()
     {
         OnDied += () => GetComponents<Collider>().ToList().ForEach(collider => collider.enabled = false);
+        _ragdoll.OnStandedUp += () => _isHitted = false;
     }
 
     public void Initialise(int health)
@@ -56,7 +58,9 @@ public class Character : MonoBehaviour
 
     public void GetSpecialHit(float force)
     {
+        _isHitted = true;
         _ragdoll.Fall();
+        OnHitted?.Invoke();
     }
 
     public void RestoreRagdoll()

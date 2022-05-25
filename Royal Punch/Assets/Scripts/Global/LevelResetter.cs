@@ -21,6 +21,8 @@ public class LevelResetter : MonoBehaviour
     [SerializeField] private PlayerAnimations _playerAnimations;
     [SerializeField] private GameObject _touchable;
 
+    [SerializeField] private GameObject _playerHealthBar;
+
     public void ResetLevel(bool win)
     {
         print("RESET");
@@ -43,6 +45,7 @@ public class LevelResetter : MonoBehaviour
     private void ShowUI()
     {
         _UIElementsToShow.ForEach(element => element.SetActive(true));
+        _playerHealthBar.SetActive(true);
         _touchable.SetActive(true);
     }
 }
