@@ -5802,20 +5802,20 @@ GameObject:
   - component: {fileID: 933979456}
   - component: {fileID: 933979455}
   - component: {fileID: 933979461}
-  - component: {fileID: 933979460}
-  - component: {fileID: 933979459}
-  - component: {fileID: 933979458}
   - component: {fileID: 933979462}
-  - component: {fileID: 933979465}
-  - component: {fileID: 933979464}
   - component: {fileID: 933979466}
-  - component: {fileID: 933979467}
   - component: {fileID: 933979468}
   - component: {fileID: 933979463}
   - component: {fileID: 933979469}
   - component: {fileID: 933979457}
   - component: {fileID: 933979470}
   - component: {fileID: 933979471}
+  - component: {fileID: 933979460}
+  - component: {fileID: 933979459}
+  - component: {fileID: 933979458}
+  - component: {fileID: 933979465}
+  - component: {fileID: 933979464}
+  - component: {fileID: 933979467}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -5873,7 +5873,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 933979454}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ad69e19814ed7d4eac295cfcd425d26, type: 3}
+  m_Script: {fileID: 11500000, guid: f4ee0e24d0a6e2541bd0fbeb2fe24b28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _stages: {fileID: 11400000, guid: 4e52bd6bd581a8e458704a51f6a7de20, type: 2}
@@ -5886,7 +5886,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 933979454}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10aaeb6be3c5ec44a9c4ed484ee8ba4c, type: 3}
+  m_Script: {fileID: 11500000, guid: a8ad58c59c155924db70a303ffc6d521, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &933979460
@@ -5898,7 +5898,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 933979454}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9bf5219e53824dc419ee22e5967564bb, type: 3}
+  m_Script: {fileID: 11500000, guid: e2ceed0908fba4d41a9703bf32045b41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &933979461
@@ -5923,7 +5923,7 @@ MonoBehaviour:
   - {fileID: 468734902}
   - {fileID: 948714880}
   - {fileID: 1218410304}
-  _shopView: {fileID: 933979467}
+  _shopView: {fileID: 933979464}
   _playerStartPoint: {fileID: 2021543337}
   _playerFight: {fileID: 552614975}
   _playerAnimations: {fileID: 552614977}
@@ -5983,10 +5983,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 933979454}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8972f47db51db84f8cc925a7a26c909, type: 3}
+  m_Script: {fileID: 11500000, guid: c6ffd69c0e0c8a843bade076d1ddb603, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rewardFactor: 0.4
+  _damageUpgradeManager: {fileID: 933979459}
+  _healthUpgradeManager: {fileID: 933979460}
+  _userMoney: {fileID: 933979465}
+  _upgradeBundle: {fileID: 11400000, guid: e5c4651987f94be4a8ed4a302f318634, type: 2}
+  _healthLevel: {fileID: 1173895245}
+  _healthPrice: {fileID: 174373554}
+  _damageLevel: {fileID: 1314085285}
+  _damagePrice: {fileID: 980157532}
+  _healthNotEnoghtMoney: {fileID: 166163588}
+  _damageNotEnoughtMoney: {fileID: 2006142963}
 --- !u!114 &933979465
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5996,15 +6005,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 933979454}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9931bce1f89b4df41baa48ac647a9ea1, type: 3}
+  m_Script: {fileID: 11500000, guid: 03b71e3f87bb2c346ba592ccc8643082, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _stageController: {fileID: 933979458}
-  _healthManager: {fileID: 933979460}
-  _damageManager: {fileID: 933979459}
-  _userMoney: {fileID: 933979464}
-  _upgradeBundle: {fileID: 11400000, guid: e5c4651987f94be4a8ed4a302f318634, type: 2}
-  _stageBundle: {fileID: 11400000, guid: 4e52bd6bd581a8e458704a51f6a7de20, type: 2}
+  _rewardFactor: 0.4
 --- !u!114 &933979466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6022,7 +6026,7 @@ MonoBehaviour:
   _moneyText: {fileID: 648508890}
   _enemy: {fileID: 1684357181}
   _player: {fileID: 552614976}
-  _money: {fileID: 933979464}
+  _money: {fileID: 933979465}
   _levelResetter: {fileID: 933979461}
 --- !u!114 &933979467
 MonoBehaviour:
@@ -6033,19 +6037,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 933979454}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc02ecde0d378df4e90415ef57b2a6fd, type: 3}
+  m_Script: {fileID: 11500000, guid: b41eaeb10657fa0438a964a23db8d14c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damageUpgradeManager: {fileID: 933979459}
-  _healthUpgradeManager: {fileID: 933979460}
-  _userMoney: {fileID: 933979464}
+  _stageController: {fileID: 933979458}
+  _healthManager: {fileID: 933979460}
+  _damageManager: {fileID: 933979459}
+  _userMoney: {fileID: 933979465}
   _upgradeBundle: {fileID: 11400000, guid: e5c4651987f94be4a8ed4a302f318634, type: 2}
-  _healthLevel: {fileID: 1173895245}
-  _healthPrice: {fileID: 174373554}
-  _damageLevel: {fileID: 1314085285}
-  _damagePrice: {fileID: 980157532}
-  _healthNotEnoghtMoney: {fileID: 166163588}
-  _damageNotEnoughtMoney: {fileID: 2006142963}
+  _stageBundle: {fileID: 11400000, guid: 4e52bd6bd581a8e458704a51f6a7de20, type: 2}
 --- !u!114 &933979468
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6058,7 +6058,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 125cf7316c0856141b50c789126c0e99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _userMoney: {fileID: 933979464}
+  _userMoney: {fileID: 933979465}
   _values: {fileID: 1202164457}
   _scaleAnimationDuration: 0.1
   _unscaleAnimationDuration: 0.3
@@ -6390,7 +6390,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 933979467}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ShopView, Assembly-CSharp
         m_MethodName: HealthClick
         m_Mode: 1
@@ -7993,7 +7993,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 933979467}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ShopView, Assembly-CSharp
         m_MethodName: DamageClick
         m_Mode: 1

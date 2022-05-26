@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4075bcbb65d4846478d6ae48d843da34, type: 3}
+  m_Script: {fileID: 11500000, guid: e3a5357b095ce7d47845f435ca272d6e, type: 3}
   m_Name: Stages
   m_EditorClassIdentifier: 
   _stages:
@@ -18,8 +18,8 @@ MonoBehaviour:
   - _stageOrder: 2
     _enemyHealth: 200
   - _stageOrder: 3
-    _enemyHealth: 300
-  - _stageOrder: 4
     _enemyHealth: 350
+  - _stageOrder: 4
+    _enemyHealth: 500
   - _stageOrder: 5
-    _enemyHealth: 400
+    _enemyHealth: 600

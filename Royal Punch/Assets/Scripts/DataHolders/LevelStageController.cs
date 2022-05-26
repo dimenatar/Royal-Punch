@@ -28,7 +28,7 @@ public class LevelStageController : MonoBehaviour
 
     public void Initialise(Stage stage)
     {
-        _currentStage = stage;
+        CurrentStage = stage;
     }
 
     public void UpgrageStage()
@@ -36,6 +36,10 @@ public class LevelStageController : MonoBehaviour
         if (!_stages.IsLastStage(_currentStage.StageOrder))
         {
             CurrentStage = _stages[_currentStage.StageOrder];
+        }
+        else
+        {
+            CurrentStage = _stages[0];
         }
     }
 }

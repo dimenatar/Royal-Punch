@@ -9,38 +9,38 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f415d174322e6e44abdc8bc6c475c05a, type: 3}
+  m_Script: {fileID: 11500000, guid: df1fda710a752b04bba17586a9eed466, type: 3}
   m_Name: Upgrades
   m_EditorClassIdentifier: 
   _damageUpgrades:
   - _order: 1
-    _priceToNext: 10
+    _priceToNext: 50
     _damage: 5
   - _order: 2
-    _priceToNext: 15
-    _damage: 10
+    _priceToNext: 100
+    _damage: 8
   - _order: 3
-    _priceToNext: 20
-    _damage: 15
+    _priceToNext: 150
+    _damage: 10
   - _order: 4
-    _priceToNext: 25
-    _damage: 20
+    _priceToNext: 200
+    _damage: 13
   - _order: 5
-    _priceToNext: 30
-    _damage: 30
+    _priceToNext: 250
+    _damage: 20
   _healthUpgrades:
   - _order: 1
-    _priceToNext: 10
-    _health: 100
+    _priceToNext: 50
+    _health: 120
   - _order: 2
-    _priceToNext: 15
-    _health: 130
+    _priceToNext: 100
+    _health: 140
   - _order: 3
-    _priceToNext: 20
-    _health: 160
-  - _order: 4
-    _priceToNext: 25
+    _priceToNext: 150
     _health: 200
+  - _order: 4
+    _priceToNext: 200
+    _health: 240
   - _order: 5
-    _priceToNext: 30
-    _health: 250
+    _priceToNext: 250
+    _health: 300
