@@ -23,4 +23,9 @@ public class SpecialAttackTrigger : MonoBehaviour
             _isPlayerInTrigger = false;
         }
     }
+
+    private void OnDisable()
+    {
+        _isPlayerInTrigger = false;
+    }
 }

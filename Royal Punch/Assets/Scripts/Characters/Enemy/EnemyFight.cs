@@ -11,10 +11,14 @@ public class EnemyFight : MonoBehaviour
     [SerializeField] private Character _enemy;
     [SerializeField] private EnemySpecial _enemySpecial;
 
+    [Header("Angle to determinate start fight with player")]
+    [SerializeField] private float _borderAngle = 60;
+
     public bool _isInFight;
 
     public bool IsInTriggerWithPlayer { get; set; }
     public bool IsInFight => _isInFight;
+    public float BorderAngle => _borderAngle;
 
     public event Action OnStartFight;
     public event Action OnEndFight;
@@ -38,6 +42,28 @@ public class EnemyFight : MonoBehaviour
         //}
     }
 
+    private void FixedUpdate()
+    {
+        if (IsInTriggerWithPlayer)
+        {
+            if (AngleRangeCheck(_enemy.transform, _player.transform, _borderAngle))
+            {
+                StartFightWithPlayer();
+            }
+            else
+            {
+                StopFightWithPlayer();
+            }
+        }
+    }
+
+    public static bool AngleRangeCheck(Transform point1, Transform point2, float borderAngle)
+    {
+        var relativePos = point2.position - point1.position;
+        var angle = Vector3.Angle(relativePos, point1.forward);
+        return angle <= borderAngle;
+    }
+
     public void StopFightWithPlayer()
     {
         if (_isInFight)
@@ -50,7 +76,7 @@ public class EnemyFight : MonoBehaviour
 
     public void StartFightWithPlayer()
     {
-        if (!_enemySpecial.IsInSpecialAttack)
+        if (!_enemySpecial.IsInSpecialAttack && !_isInFight)
         {
             _isInFight = true;
             OnStartFight?.Invoke();

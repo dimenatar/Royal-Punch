@@ -14,7 +14,8 @@ public class EndPanel : MonoBehaviour
     [SerializeField] private Character _player;
 
     [SerializeField] private UserMoney _money;
-    [SerializeField] private LevelResetter _levelResetter;
+    [SerializeField] private LevelLoader _levelLoader;
+    [SerializeField] private DataLoader _dataLoader;
 
     private bool _isWin;
     private int _reward;
@@ -46,7 +47,8 @@ public class EndPanel : MonoBehaviour
     {
         HidePanel();
         _money.AddMoney(_reward);
-        _levelResetter.ResetLevel(_isWin);
+        _dataLoader.SaveData();
+        _levelLoader.Reload();
     }
 
     private void HidePanel()

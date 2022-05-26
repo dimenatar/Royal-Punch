@@ -9,7 +9,7 @@ public class FlyingHP : MonoBehaviour
     private Color _textColor;
     private TextMeshPro _text;
 
-    public void Initialise(int value, Vector3 rotation, float lifeTime, float flyingHeight)
+    public void Initialise(int value, float lifeTime, float flyingHeight)
     {
         _text = GetComponent<TextMeshPro>();
         _text.text = value.ToString();
@@ -20,7 +20,6 @@ public class FlyingHP : MonoBehaviour
         StartCoroutine(nameof(Disapear));
         //DOTween.To(() => 1, x => alpha = x, 0, lifeTime).OnUpdate(() => ApplyAlpha(alpha));
 
-        transform.localRotation = Quaternion.Euler(rotation);
         transform.DOMove(transform.position + transform.up * flyingHeight, lifeTime/5*4);
         Destroy(gameObject, lifeTime);
     }

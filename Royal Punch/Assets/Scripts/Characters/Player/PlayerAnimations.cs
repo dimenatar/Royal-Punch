@@ -23,8 +23,14 @@ public class PlayerAnimations : MonoBehaviour
     private const string IS_IN_FIGHT = "IsInFight";
     private const string IS_HITTED = "IsHitted";
 
+    private readonly int SPEED = Animator.StringToHash("Speed");
+    private readonly int X_DIRECTION = Animator.StringToHash("X");
+    private readonly int Z_DIRECTION = Animator.StringToHash("Z");
+
     private int STAND_ID = Animator.StringToHash("Idle2");
     #endregion
+
+    private float _animationSpeed;
 
     private void Awake()
     {
@@ -36,14 +42,13 @@ public class PlayerAnimations : MonoBehaviour
         //_playerRagdoll.OnStandedUp += () => _playerAnimator.SetBool(IS_HITTED, false);
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        SetRunningAnimation(_touchController.GetTouchPosition);
-    }
-
-    private void Start()
-    {
-
+        var dir = _touchController.GetTouchPosition;
+        _animationSpeed = Mathf.Abs(dir.x / 2) + Mathf.Abs(dir.y / 2);
+        _playerAnimator.SetFloat(SPEED, _animationSpeed);
+        _playerAnimator.SetFloat(X_DIRECTION, dir.x);
+        _playerAnimator.SetFloat(Z_DIRECTION, dir.y);
     }
 
     private void Fall()
@@ -69,31 +74,31 @@ public class PlayerAnimations : MonoBehaviour
 
     private void SetRunningAnimation(Vector2 direction)
     {
-        //idle
-        if (direction == Vector2.zero)
-        {
-            _playerAnimator.SetTrigger(IDLE);
-            return;
-        }
-        //straight
-        if (direction.x >= -0.3f && direction.x <= 0.3f && direction.y > 0)
-        {
-            _playerAnimator.SetTrigger(RUN_STRAIGHT);
-        }
-        //backwards
-        else if (direction.x >= -0.3f && direction.x <= 0.3f && direction.y < 0)
-        {
-            _playerAnimator.SetTrigger(RUN_BACKWARDS);
-        }
-        //left
-        else if (direction.x < 0)
-        {
-            _playerAnimator.SetTrigger(RUN_LEFT);
-        }
-        //right
-        else
-        {
-            _playerAnimator.SetTrigger(RUN_RIGHT);
-        }
+        ////idle
+        //if (direction == Vector2.zero)
+        //{
+        //    _playerAnimator.SetTrigger(IDLE);
+        //    return;
+        //}
+        ////straight
+        //if (direction.x >= -0.3f && direction.x <= 0.3f && direction.y > 0)
+        //{
+        //    _playerAnimator.SetTrigger(RUN_STRAIGHT);
+        //}
+        ////backwards
+        //else if (direction.x >= -0.3f && direction.x <= 0.3f && direction.y < 0)
+        //{
+        //    _playerAnimator.SetTrigger(RUN_BACKWARDS);
+        //}
+        ////left
+        //else if (direction.x < 0)
+        //{
+        //    _playerAnimator.SetTrigger(RUN_LEFT);
+        //}
+        ////right
+        //else
+        //{
+        //    _playerAnimator.SetTrigger(RUN_RIGHT);
+        //}
     }
 }

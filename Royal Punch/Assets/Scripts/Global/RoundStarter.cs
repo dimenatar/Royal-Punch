@@ -5,13 +5,17 @@ using UnityEngine;
 
 public class RoundStarter : MonoBehaviour
 {
+    [SerializeField] private float _delayToEnableEnemy = 0.5f;
+
     [SerializeField] private Animator _camera;
     [SerializeField] private Animator _playerAnimator;
     [SerializeField] private Animator _enemyAnimator;
     [SerializeField] private Animator _specialsAnimator;
 
     [SerializeField] private EnemySpecial _enemySpecial;
+
     [SerializeField] private List<GameObject> _UIElementsToHide;
+    [SerializeField] private List<GameObject> _UIElementsToShow;
 
     [SerializeField] private HealthUpgradeManager _healthUpgradeManager;
     [SerializeField] private DamageUpgradeManager _damageUpgradeManager;
@@ -26,6 +30,8 @@ public class RoundStarter : MonoBehaviour
 
     [SerializeField] private Ragdoll _playerRagdoll;
     [SerializeField] private Ragdoll _enemyRagdoll;
+
+    [SerializeField] private GameObject _enemyObject;
 
     public event Action OnCameraMoved;
 
@@ -47,6 +53,7 @@ public class RoundStarter : MonoBehaviour
         _camera.SetTrigger("In");
         _UIElementsToHide.ForEach(element => element.SetActive(false));
         Invoke(nameof(CameraRotated), 1);
+        Invoke(nameof(EnableEnemy), _delayToEnableEnemy);
     }
 
     public void CameraRotated() => OnCameraMoved?.Invoke();
@@ -66,5 +73,9 @@ public class RoundStarter : MonoBehaviour
         _enemyRagdoll.Initialise();
 
         _specialsAnimator.enabled = true;
+
+        _UIElementsToShow.ForEach(element => element.SetActive(true));
     }
+
+    private void EnableEnemy() => _enemyObject.SetActive(true);
 }

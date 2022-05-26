@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DataLoader : MonoBehaviour
 {
@@ -17,9 +18,9 @@ public class DataLoader : MonoBehaviour
 
     private void Awake()
     {
-        LoadData();
-        
-        Application.quitting += SaveData;
+        //LoadData();
+        SceneManager.sceneLoaded += (s, e) => LoadData();
+        Application.quitting += ExitFromGame;
     }
 
     private void Start()
@@ -27,8 +28,16 @@ public class DataLoader : MonoBehaviour
         InitialiseControllers();
     }
 
+    public void SaveData()
+    {
+        _userData.SaveData(_stageController.CurrentStage, _healthManager.HealthUpgrade, _damageManager.CurrentUpgrade, _userMoney.Money);
+    }
+
     private void LoadData()
     {
+        _userData = UserProgressManager.UserData;
+        if (_userData != null) return;
+
         _userData = UserProgressManager.LoadUserData();
         if (_userData == null)
         {
@@ -40,14 +49,13 @@ public class DataLoader : MonoBehaviour
 
     private void InitialiseControllers()
     {
+        _userMoney.Initialise(_userData.Money);
         _stageController.Initialise(_userData.Stage);
         _healthManager.Initialise(_userData.HealthUpgrade);
         _damageManager.Initialise(_userData.DamageUpgrade);
-        print(_userData.Money);
-        _userMoney.Initialise(_userData.Money);
     }
 
-    private void SaveData()
+    private void ExitFromGame()
     {
         _userData.SaveData(_stageController.CurrentStage, _healthManager.HealthUpgrade, _damageManager.CurrentUpgrade, _userMoney.Money);
         UserProgressManager.SaveUserData(UserData);

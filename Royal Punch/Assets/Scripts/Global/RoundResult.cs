@@ -27,6 +27,7 @@ public class RoundResult : MonoBehaviour
     [SerializeField] private Ragdoll _enemyRagdoll;
     [SerializeField] private Ragdoll _playerRagdoll;
 
+    [SerializeField] private List<GameObject> _UIElementsToHide;
 
     private void Awake()
     {
@@ -57,6 +58,8 @@ public class RoundResult : MonoBehaviour
         }
         _enemyFight.StopFightWithPlayer();
         _playerFight.ForceReset();
+
+        _UIElementsToHide.ForEach(element => element.SetActive(false));
         //_enemyAnimations.ForceStop();
     }
 

@@ -19,9 +19,15 @@ public class ShopView : MonoBehaviour
     [SerializeField] private Image _healthNotEnoghtMoney;
     [SerializeField] private Image _damageNotEnoughtMoney;
 
+    private void Awake()
+    {
+        _healthUpgradeManager.OnInitialised += DisplayHealth;
+        _damageUpgradeManager.OnInitialised += DisplayDamage;
+    }
+
     private void Start()
     {
-        DisplayUpgrades();
+        //DisplayUpgrades();
     }
 
     public void DisplayUpgrades()
@@ -81,6 +87,7 @@ public class ShopView : MonoBehaviour
 
     private void DisplayDamage()
     {
+        print(_damageUpgradeManager.CurrentUpgrade.Order);
         if (!_upgradeBundle.IsLastDamageUpgrade(_damageUpgradeManager.CurrentUpgrade.Order - 1))
         {
             _damageLevel.text = $"LV. {_damageUpgradeManager.CurrentUpgrade.Order}";

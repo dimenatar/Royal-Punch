@@ -7,13 +7,15 @@ using UnityEngine;
 public class UserProgressManager
 {
     public static string Path { get; } = Application.persistentDataPath + "/UserData.bin";
+    public static UserData UserData { get; set; }
 
     public static UserData LoadUserData(string path)
     {
         FileStream stream = new FileStream(path, FileMode.OpenOrCreate);
         try
         {
-            return (UserData)new BinaryFormatter().Deserialize(stream);
+            UserData = (UserData)new BinaryFormatter().Deserialize(stream);
+            return UserData;
         }
         catch (System.Exception)
         {
@@ -30,7 +32,8 @@ public class UserProgressManager
         FileStream stream = new FileStream(Path, FileMode.OpenOrCreate);
         try
         {
-            return (UserData)new BinaryFormatter().Deserialize(stream);
+            UserData = (UserData)new BinaryFormatter().Deserialize(stream);
+            return UserData;
         }
         catch (System.Exception)
         {

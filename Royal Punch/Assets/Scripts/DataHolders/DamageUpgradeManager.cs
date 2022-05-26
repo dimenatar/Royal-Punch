@@ -8,8 +8,11 @@ public class DamageUpgradeManager : MonoBehaviour
 
     public DamageUpgrade CurrentUpgrade { get => _currentUpgrade; set => _currentUpgrade = value; }
 
+    public event System.Action OnInitialised;
+
     public void Initialise(DamageUpgrade damageUpgrade)
     {
         _currentUpgrade = damageUpgrade;
+        OnInitialised?.Invoke();
     }
 }
