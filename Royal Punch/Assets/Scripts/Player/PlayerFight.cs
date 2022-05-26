@@ -21,13 +21,15 @@ public class PlayerFight : MonoBehaviour
     {
         OnEnemyEntersTrigger += () => StartCoroutine(nameof(HitEnemy));
         OnEnemyExitsTrigger += () => StopCoroutine(nameof(HitEnemy));
-        _player.OnHitted += () => StopFight();
-        _playerRagdoll.OnStandedUp += StartFight;
+        _player.OnFallen += () => StopFight();
+        _playerRagdoll.OnStandedUp += TryStartFight;
+        _player.OnDied += StopFight;
     }
 
     public void Initialise(int damage)
     {
         _damage = damage;
+        _isInFight = false;
     }
 
     public void ForceReset()
@@ -59,7 +61,7 @@ public class PlayerFight : MonoBehaviour
 
     private void StartFight()
     {
-        print("START FIGHT");
+       // print("START FIGHT");
         _enemyFight.GetComponent<EnemyFight>().IsInTriggerWithPlayer = true;
         _enemyFight.GetComponent<EnemyFight>().StartFightWithPlayer();
         OnEnemyEntersTrigger?.Invoke();
@@ -70,7 +72,7 @@ public class PlayerFight : MonoBehaviour
     {
         if (_isInFight)
         {
-            print("END FIGHT");
+            //print("END FIGHT");
             _enemyFight.IsInTriggerWithPlayer = false;
             _enemyFight.StopFightWithPlayer();
             OnEnemyExitsTrigger?.Invoke();
@@ -84,6 +86,14 @@ public class PlayerFight : MonoBehaviour
         {
             _enemy.TakeDamage(_damage);
             yield return new WaitForSeconds(_delayToHit);
+        }
+    }
+
+    private void TryStartFight()
+    {
+        if (_isInFight)
+        {
+            StartFight();
         }
     }
 }

@@ -7,6 +7,7 @@ public class EnemySpecial : MonoBehaviour
 {
     [SerializeField] private PlayerMovement _playerMovement;
     [SerializeField] private Character _player;
+    [SerializeField] private Character _enemy;
     [SerializeField] private Transform _playerTransform;
 
     [SerializeField] private Timer _timerBetweenSpecialAttacks;
@@ -25,14 +26,15 @@ public class EnemySpecial : MonoBehaviour
     [SerializeField] private float _delayBetweenAttackPickedAndApplied = 2;
     [SerializeField] private float _specialAttackAnimationDuration = 2;
     [SerializeField] private float _tiredDuration = 5;
+    [SerializeField] private float _delayBetweenDraggingStopedAndKnocked = 1;
 
     [Header("Attack's damage")]
     [SerializeField] private int _splashDamage = 20;
     [SerializeField] private int _streamDamage = 40;
     [SerializeField] private int _knockDamage = 60;
 
-    private bool _isInSpecialAttack;
-    private bool _isDragging;
+    public bool _isInSpecialAttack;
+    public bool _isDragging;
 
     public bool IsDragging => _isDragging;
     public bool IsInSpecialAttack => _isInSpecialAttack;
@@ -49,8 +51,9 @@ public class EnemySpecial : MonoBehaviour
     private void Awake()
     {
         _timerBetweenSpecialAttacks.OnTime += PickRandomSpecialAttack;
-        OnSpecialAttackPicked += StartAttack;
-        OnSpecialAttackEnded += () => _timerBetweenSpecialAttacks.StartTimer();
+        _timerBetweenSpecialAttacks.OnTime += () => print("ONTIME");
+       // OnSpecialAttackPicked += StartAttack;
+        //OnSpecialAttackEnded += () => _timerBetweenSpecialAttacks.UpdateTimer();
         OnSpecialAttackEnded += () => _isInSpecialAttack = false;
         _enemyFight.OnStartFight += ForceStopDragging;
         OnSpecialAttackPicked += (attack) =>  _followPlayer.StopFollowing();
@@ -65,7 +68,7 @@ public class EnemySpecial : MonoBehaviour
 
     public void Initialise()
     {
-        _timerBetweenSpecialAttacks.Initialise(_delayBetweenSpecialAttacks, startOnInit: true, repeating: false);
+        _timerBetweenSpecialAttacks.Initialise(_delayBetweenSpecialAttacks, startOnInit: true, repeating: true);
     }
 
     public void StopSpecials()
@@ -78,39 +81,47 @@ public class EnemySpecial : MonoBehaviour
         if (!_enemyFight.IsInFight)
         {
             // pick random attack through all of types
-            SpecialAttacks attack = (SpecialAttacks) UnityEngine.Random.Range(0, Enum.GetNames(typeof(SpecialAttacks)).Length);
-            OnSpecialAttackPicked?.Invoke(attack);
+            SpecialAttacks attack = SpecialAttacks.Dragging;
+            //SpecialAttacks attack = (SpecialAttacks) UnityEngine.Random.Range(0, Enum.GetNames(typeof(SpecialAttacks)).Length);
+            StartAttack(attack);
         }
         else
-        _timerBetweenSpecialAttacks.StartTimer();
+        {
+            print("START TIMER");
+            //_timerBetweenSpecialAttacks.StartTimer();
+        }
     }
 
     private void StartAttack(SpecialAttacks attack)
     {
-        print(attack);
-        switch (attack)
+        if (!_enemyFight.IsInFight)
         {
-            case SpecialAttacks.Stream:
-                {
-                    _isInSpecialAttack = true;
-                    Invoke(nameof(DoStreamAttack), _specialAttackAnimationDuration);
-                    break;
-                }
-            case SpecialAttacks.Dragging:
-                {
-                    StartCoroutine(nameof(StartDraggingPlayer));
-                    _specialAttackTimer.ClearEvent();
-                    _specialAttackTimer.OnTime += StopDragging;
-                    _specialAttackTimer.Initialise(_draggingDuration);
-                    _specialAttackTimer.StartTimer();
-                    break;
-                }
-            case SpecialAttacks.SplashArea:
-                {
-                    _isInSpecialAttack = true;
-                    Invoke(nameof(DoSplashAttack), _specialAttackAnimationDuration);
-                    break;
-                }
+            OnSpecialAttackPicked?.Invoke(attack);
+            switch (attack)
+            {
+                case SpecialAttacks.Stream:
+                    {
+                        _isInSpecialAttack = true;
+                        Invoke(nameof(DoStreamAttack), _specialAttackAnimationDuration);
+                        break;
+                    }
+                case SpecialAttacks.Dragging:
+                    {
+                        StartCoroutine(nameof(StartDraggingPlayer));
+                        _specialAttackTimer.ClearEvent();
+                        _specialAttackTimer.OnTime += StopDragging;
+                        _specialAttackTimer.Initialise(_draggingDuration);
+                        _specialAttackTimer.StartTimer();
+                        _isDragging = true;
+                        break;
+                    }
+                case SpecialAttacks.SplashArea:
+                    {
+                        _isInSpecialAttack = true;
+                        Invoke(nameof(DoSplashAttack), _specialAttackAnimationDuration);
+                        break;
+                    }
+            }
         }
     }
 
@@ -121,7 +132,6 @@ public class EnemySpecial : MonoBehaviour
             print("SPLASH");
             _player.GetSpecialHit(_hitPlayerForce);
             _player.TakeDamage(_splashDamage);
-
         }
         Invoke(nameof(CallSpecialEnded), _tiredDuration);
     }
@@ -163,6 +173,7 @@ public class EnemySpecial : MonoBehaviour
     //if we start fight with player
     private void ForceStopDragging()
     {
+        print("123");
         if (_isDragging)
         {
             print("FORCE STOP DRAGGING");
@@ -170,7 +181,24 @@ public class EnemySpecial : MonoBehaviour
             OnDraggingForceStopped?.Invoke();
             _playerMovement.DraggingForce = Vector3.zero;
             _isDragging = false;
-            _timerBetweenSpecialAttacks.StartTimer();
+            Invoke(nameof(DoKnockAttack), _delayBetweenDraggingStopedAndKnocked);
+            //_timerBetweenSpecialAttacks.StartTimer();
         }
     }
+
+    private void DoKnockAttack()
+    {
+        _player.GetSpecialHit(_hitPlayerForce);
+        _player.TakeDamage(_knockDamage);
+        Invoke(nameof(CallSpecialEnded), _tiredDuration);
+    }
+
+    private void Died()
+    {
+        _playerMovement.DraggingForce = Vector3.zero;
+        StopCoroutine(nameof(StartDraggingPlayer));
+        _isInSpecialAttack = false;
+        _isDragging = false;
+    }
+
 }

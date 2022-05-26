@@ -21,6 +21,7 @@ public class Ragdoll : MonoBehaviour
     [SerializeField] private RagdollSaver _ragdollSaver;
 
     private bool _isFallen;
+    private bool _isInitialised;
     private Rigidbody[] _rigidbodies;
     private bool _isFoundRigids;
     private Vector3 _saveHipPos;
@@ -29,6 +30,8 @@ public class Ragdoll : MonoBehaviour
     private Vector3 _endPos;
     private bool _isFollowing;
     private float _timer = 0;
+
+    private bool _isStandingSave;
 
     private List<Vector3> _temp;
     private List<Quaternion> _temp2;
@@ -68,6 +71,19 @@ public class Ragdoll : MonoBehaviour
         }
     }
 
+    public void Initialise()
+    {
+        if (_isInitialised)
+        {
+            _isStangingAfterFalling = _isStandingSave;
+        }
+        else
+        {
+            _isStandingSave = _isStangingAfterFalling;
+            _isInitialised = true;
+        }
+    }
+
     public void Fall()
     {
         if (!_isFallen)
@@ -85,8 +101,9 @@ public class Ragdoll : MonoBehaviour
         }
     }
 
-    public void Stand()
+    private void Stand()
     {
+        if (_isStangingAfterFalling)
         OnBeginStanding?.Invoke();
     }
 
@@ -104,6 +121,12 @@ public class Ragdoll : MonoBehaviour
         SetColliderState(false);
         _isFallen = false;
         OnStandedUp?.Invoke();
+    }
+
+    public void FullyFall()
+    {
+        _isStangingAfterFalling = false;
+        Fall();
     }
 
     private void SetRigidbodyState(bool state)
@@ -157,19 +180,7 @@ public class Ragdoll : MonoBehaviour
 
     private void BeginStanding()
     {
-
-        //_isFollowing = false;
-        //transform.position += new Vector3(0, 0, (_endPos - _startPos).z);
-        //_rigidbodyToPunch.transform.localPosition = _startPos;
-        //_hip.DOMove(_saveHipPos, _standUpDuration).OnComplete(() => OnStandedUp?.Invoke());
-        // Invoke(nameof(ReturnValuesToStanded), 0.5f);
-
-
-
-
         Vector3 headPos = _ragdollSaver.Bones.Where(b => b.Name == _head.name).FirstOrDefault().Position;
-
-        //_head.DOMove(headPos, 1f).OnComplete(() => RestoreBones());
         StartCoroutine(nameof(LerpHead));
     }
 

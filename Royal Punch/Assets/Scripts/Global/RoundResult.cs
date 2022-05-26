@@ -24,6 +24,9 @@ public class RoundResult : MonoBehaviour
     [SerializeField] private GameObject _playerHealthBar;
 
     [SerializeField] private LevelStageController _levelStageController;
+    [SerializeField] private Ragdoll _enemyRagdoll;
+    [SerializeField] private Ragdoll _playerRagdoll;
+
 
     private void Awake()
     {
@@ -46,14 +49,15 @@ public class RoundResult : MonoBehaviour
         {
             _playerAnimations.Win();
             _levelStageController.UpgrageStage();
+            _enemyRagdoll.FullyFall();
         }
         else
         {
-
+            _playerRagdoll.FullyFall();
         }
         _enemyFight.StopFightWithPlayer();
         _playerFight.ForceReset();
-        _enemyAnimations.ForceStop();
+        //_enemyAnimations.ForceStop();
     }
 
     private void PlayerDied() => EndRound(false);

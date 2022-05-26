@@ -8,7 +8,11 @@ public class LevelResetter : MonoBehaviour
     [SerializeField] private Character _enemy;
 
     [SerializeField] private Transform _playerTransform;
+
     [SerializeField] private Animator _playerAnimator;
+    [SerializeField] private Animator _camera;
+    [SerializeField] private Animator _enemyAnimator;
+
     [SerializeField] private List<GameObject> _UIElementsToShow;
     [SerializeField] private ShopView _shopView;
 
@@ -16,7 +20,6 @@ public class LevelResetter : MonoBehaviour
 
     [SerializeField] private PlayerFight _playerFight;
 
-    [SerializeField] private Animator _camera;
 
     [SerializeField] private PlayerAnimations _playerAnimations;
     [SerializeField] private GameObject _touchable;
@@ -26,7 +29,7 @@ public class LevelResetter : MonoBehaviour
     public void ResetLevel(bool win)
     {
         print("RESET");
-      
+        _enemyAnimator.enabled = true;
         _playerAnimations.GoToMainIdle();
         _camera.SetTrigger("Out");
         if (!win)

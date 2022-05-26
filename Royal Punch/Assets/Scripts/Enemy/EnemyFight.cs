@@ -8,9 +8,10 @@ public class EnemyFight : MonoBehaviour
     [SerializeField] private int _baseAttackDamage = 1;
     [SerializeField] private float _delayBetweenHits = 0.5f;
     [SerializeField] private Character _player;
+    [SerializeField] private Character _enemy;
     [SerializeField] private EnemySpecial _enemySpecial;
 
-    private bool _isInFight;
+    public bool _isInFight;
 
     public bool IsInTriggerWithPlayer { get; set; }
     public bool IsInFight => _isInFight;
@@ -21,6 +22,7 @@ public class EnemyFight : MonoBehaviour
     private void Awake()
     {
         _enemySpecial.OnSpecialAttackEnded += TryStartFightWithPlayer;
+        _enemy.OnDied += StopFightWithPlayer;
     }
 
     private void OnTriggerStay(Collider other)
@@ -48,7 +50,7 @@ public class EnemyFight : MonoBehaviour
 
     public void StartFightWithPlayer()
     {
-        if (!_enemySpecial.IsInSpecialAttack && !_enemySpecial.IsDragging)
+        if (!_enemySpecial.IsInSpecialAttack)
         {
             _isInFight = true;
             OnStartFight?.Invoke();

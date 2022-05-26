@@ -18,7 +18,7 @@ public class EnemyAnimations : MonoBehaviour
 
     private const string TO_IDLE = "FromTiredToIdle";
     private const string END_DRAGGING = "DraggingToTired";
-
+    private const string KNOCK_ATTACK = "Knock";
     #endregion
 
     private void Awake()
@@ -28,7 +28,7 @@ public class EnemyAnimations : MonoBehaviour
         _enemySpecial.OnSpecialAttackPicked += SetSpecialAnim;
         //_enemySpecial.OnSpecialAttackEnded += () => Invoke(nameof(TranslateFromTiredToIdle), _enemySpecial.TiredDuration);
         _enemySpecial.OnSpecialAttackEnded += TranslateFromTiredToIdle;
-        _enemySpecial.OnDraggingForceStopped += ForceStopSpecial;
+        _enemySpecial.OnDraggingForceStopped += DraggingInterrupted;
         _enemy.OnDied += ResetTriggers;
     }
 
@@ -37,10 +37,9 @@ public class EnemyAnimations : MonoBehaviour
         _enemyAnimator.Play("Empty");
     }
 
-    public void ForceStopSpecial()
+    public void DraggingInterrupted()
     {
-        print("FORCE STOP SPECIAL");
-        _enemyAnimator.Play("Idle", 1);
+        _enemyAnimator.Play(KNOCK_ATTACK);
     }
 
     public void ResetTriggers()
