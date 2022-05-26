@@ -54,6 +54,8 @@ public class RoundStarter : MonoBehaviour
         _UIElementsToHide.ForEach(element => element.SetActive(false));
         Invoke(nameof(CameraRotated), 1);
         Invoke(nameof(EnableEnemy), _delayToEnableEnemy);
+        print(_levelStageController.CurrentStage.EnemyHealth);
+        
     }
 
     public void CameraRotated() => OnCameraMoved?.Invoke();
@@ -61,7 +63,6 @@ public class RoundStarter : MonoBehaviour
     public void StartRound()
     { 
         _player.Initialise(_healthUpgradeManager.HealthUpgrade.Health);
-        _enemy.Initialise(_levelStageController.CurrentStage.EnemyHealth);
 
         _playerAnimator.SetTrigger("Start");
         _playerFight.Initialise(_damageUpgradeManager.CurrentUpgrade.Damage);
@@ -77,5 +78,9 @@ public class RoundStarter : MonoBehaviour
         _UIElementsToShow.ForEach(element => element.SetActive(true));
     }
 
-    private void EnableEnemy() => _enemyObject.SetActive(true);
+    private void EnableEnemy()
+    {
+        _enemyObject.SetActive(true);
+        _enemy.Initialise(_levelStageController.CurrentStage.EnemyHealth);
+    }
 }
