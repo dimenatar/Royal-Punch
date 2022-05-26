@@ -6390,7 +6390,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 933979464}
         m_TargetAssemblyTypeName: ShopView, Assembly-CSharp
         m_MethodName: HealthClick
         m_Mode: 1
@@ -7993,7 +7993,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 933979464}
         m_TargetAssemblyTypeName: ShopView, Assembly-CSharp
         m_MethodName: DamageClick
         m_Mode: 1

@@ -81,8 +81,8 @@ public class EnemySpecial : MonoBehaviour
         if (!_enemyFight.IsInFight)
         {
             // pick random attack through all of types
-            SpecialAttacks attack = SpecialAttacks.Dragging;
-            //SpecialAttacks attack = (SpecialAttacks) UnityEngine.Random.Range(0, Enum.GetNames(typeof(SpecialAttacks)).Length);
+            //SpecialAttacks attack = SpecialAttacks.Dragging;
+            SpecialAttacks attack = (SpecialAttacks) UnityEngine.Random.Range(0, Enum.GetNames(typeof(SpecialAttacks)).Length);
             StartAttack(attack);
         }
         else
