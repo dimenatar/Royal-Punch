@@ -18,8 +18,7 @@ public class DataLoader : MonoBehaviour
 
     private void Awake()
     {
-        //LoadData();
-        SceneManager.sceneLoaded += (s, e) => LoadData();
+        LoadData();
         Application.quitting += ExitFromGame;
     }
 
