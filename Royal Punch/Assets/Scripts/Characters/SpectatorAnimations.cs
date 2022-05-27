@@ -7,7 +7,7 @@ public class SpectatorAnimations : MonoBehaviour
     [SerializeField] private int _animAmount;
     [SerializeField] private Animator _animator;
 
-    private int _animIndex = Animator.StringToHash("index");
+    private readonly int _animIndex = Animator.StringToHash("index");
 
     private void Start()
     {
