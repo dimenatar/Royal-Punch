@@ -8,11 +8,11 @@ public class Condetti : MonoBehaviour
     [SerializeField] private ParticleSystem _confetti2;
     [SerializeField] private float _shotDuration;
     [SerializeField] private float _shotMultiplicator;
-    [SerializeField] private RoundResult _roundResult;
+    [SerializeField] private Character _enemy;
 
     private void Awake()
     {
-        _roundResult.OnRoundEnded += Shoot;
+        _enemy.OnDied += Shoot;
     }
 
     private void Shoot()

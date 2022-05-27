@@ -6,28 +6,23 @@ using DG.Tweening;
 
 public class HitDisplayer : MonoBehaviour
 {
-    [SerializeField] private Canvas _canvas;
+    [SerializeField] private Transform _parent;
     [SerializeField] private Camera _main;
     [SerializeField] private Character _enemy;
     [SerializeField] private GameObject _hitPrefab;
     [SerializeField] private float _lifeTime;
 
-    private Vector2 _xRange;
-    private Vector2 _yRange;
+    [SerializeField] private Vector2 _xRange;
+    [SerializeField] private Vector2 _yRange;
 
     private void Awake()
     {
         _enemy.OnHit += (damage) => DisplayHit();
     }
 
-    private void Start()
-    {
-        CalculateBounds();
-    }
-
     private void DisplayHit()
     {
-        GameObject hit = Instantiate(_hitPrefab, _canvas.transform);
+        GameObject hit = Instantiate(_hitPrefab, _parent.transform);
 
         var rtransform = hit.GetComponent<RectTransform>();
 
@@ -38,20 +33,6 @@ public class HitDisplayer : MonoBehaviour
 
 
         Destroy(hit, _lifeTime);
-    }
-
-    private void CalculateBounds()
-    {
-        //center pivot
-        var reference = _canvas.GetComponent<CanvasScaler>().referenceResolution / 2;
-
-        _xRange.x = -reference.x + _hitPrefab.GetComponent<RectTransform>().sizeDelta.x;
-        _xRange.y = reference.x - _hitPrefab.GetComponent<RectTransform>().sizeDelta.x;
-
-        _yRange.x = -reference.y + _hitPrefab.GetComponent<RectTransform>().sizeDelta.y;
-        _yRange.y = reference.x - _hitPrefab.GetComponent<RectTransform>().sizeDelta.y;
-
-        print(_xRange + " " + _yRange);
     }
 
     private Vector2 GetRandomPoint()
