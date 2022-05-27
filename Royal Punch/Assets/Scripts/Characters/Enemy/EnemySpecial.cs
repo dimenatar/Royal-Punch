@@ -58,12 +58,7 @@ public class EnemySpecial : MonoBehaviour
         _enemyFight.OnStartFight += ForceStopDragging;
         OnSpecialAttackPicked += (attack) =>  _followPlayer.StopFollowing();
         OnSpecialAttackEnded += _followPlayer.StartFollowing;
-    }
-
-    private void Start()
-    {
-        
-        //_timerBetweenSpecialAttacks.StartTimer();
+        _enemy.OnDied += Died;
     }
 
     public void Initialise()
@@ -84,11 +79,6 @@ public class EnemySpecial : MonoBehaviour
             //SpecialAttacks attack = SpecialAttacks.Dragging;
             SpecialAttacks attack = (SpecialAttacks) UnityEngine.Random.Range(0, Enum.GetNames(typeof(SpecialAttacks)).Length);
             StartAttack(attack);
-        }
-        else
-        {
-            print("START TIMER");
-            //_timerBetweenSpecialAttacks.StartTimer();
         }
     }
 
@@ -130,7 +120,7 @@ public class EnemySpecial : MonoBehaviour
         if (_splash.IsPlayerInTrigger)
         {
             print("SPLASH");
-            _player.GetSpecialHit(_hitPlayerForce);
+            _player.GetSpecialHit();
             _player.TakeDamage(_splashDamage);
         }
         Invoke(nameof(CallSpecialEnded), _tiredDuration);
@@ -140,7 +130,7 @@ public class EnemySpecial : MonoBehaviour
     {
         if (_stream.IsPlayerInTrigger)
         {
-            _player.GetSpecialHit(_hitPlayerForce);
+            _player.GetSpecialHit();
             _player.TakeDamage(_streamDamage);
         }
         Invoke(nameof(CallSpecialEnded), _tiredDuration);
@@ -182,13 +172,12 @@ public class EnemySpecial : MonoBehaviour
             _playerMovement.DraggingForce = Vector3.zero;
             _isDragging = false;
             Invoke(nameof(DoKnockAttack), _delayBetweenDraggingStopedAndKnocked);
-            //_timerBetweenSpecialAttacks.StartTimer();
         }
     }
 
     private void DoKnockAttack()
     {
-        _player.GetSpecialHit(_hitPlayerForce);
+        _player.GetSpecialHit();
         _player.TakeDamage(_knockDamage);
         Invoke(nameof(CallSpecialEnded), _tiredDuration);
     }
@@ -200,5 +189,4 @@ public class EnemySpecial : MonoBehaviour
         _isInSpecialAttack = false;
         _isDragging = false;
     }
-
 }

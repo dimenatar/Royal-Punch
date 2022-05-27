@@ -25,11 +25,6 @@ public class ShopView : MonoBehaviour
         _damageUpgradeManager.OnInitialised += DisplayDamage;
     }
 
-    private void Start()
-    {
-        //DisplayUpgrades();
-    }
-
     public void DisplayUpgrades()
     {
         DisplayHealth();
@@ -87,7 +82,6 @@ public class ShopView : MonoBehaviour
 
     private void DisplayDamage()
     {
-        print(_damageUpgradeManager.CurrentUpgrade.Order);
         if (!_upgradeBundle.IsLastDamageUpgrade(_damageUpgradeManager.CurrentUpgrade.Order - 1))
         {
             _damageLevel.text = $"LV. {_damageUpgradeManager.CurrentUpgrade.Order}";

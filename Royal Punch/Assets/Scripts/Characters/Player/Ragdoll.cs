@@ -10,6 +10,7 @@ public class Ragdoll : MonoBehaviour
     [SerializeField] private float _delayToStand = 3;
     [SerializeField] private float _standUpDuration = 0.5f;
     [SerializeField] private bool _isStangingAfterFalling = true;
+    [SerializeField] private float _forceToPunch;
 
     [SerializeField] private Collider[] _mainColliders;
     [SerializeField] private Rigidbody _head;
@@ -26,13 +27,8 @@ public class Ragdoll : MonoBehaviour
     private bool _isFoundRigids;
     private Vector3 _saveHipPos;
 
-    private Vector3 _startPos;
-    private Vector3 _endPos;
-    private bool _isFollowing;
-    private float _timer = 0;
-
     private bool _isStandingSave;
-
+    private float _timer;
     private List<Vector3> _temp;
     private List<Quaternion> _temp2;
 
@@ -59,15 +55,10 @@ public class Ragdoll : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            PunchRigidbody(5);
-            Fall();
-        }
-        if (_isFollowing)
-        {
-            _endPos = _rigidbodyToPunch.transform.localPosition;
-            //_camera.transform.position = Vector3.Lerp(_camera.transform.position, _camera.transform.position + _startPos - _endPos, Time.deltaTime);
+            PunchRigidbody();
+            //Fall();
         }
     }
 
@@ -88,7 +79,6 @@ public class Ragdoll : MonoBehaviour
     {
         if (!_isFallen)
         {
-            //_playerAnimator.enabled = false;
             SetRigidbodyState(false);
             SetColliderState(true);
 
@@ -107,12 +97,11 @@ public class Ragdoll : MonoBehaviour
         OnBeginStanding?.Invoke();
     }
 
-    public void PunchRigidbody(float force)
+    public void PunchRigidbody()
     {
-        _isFollowing = true;
-        _startPos = _rigidbodyToPunch.transform.position;
-         _rigidbodyToPunch.AddForce(-transform.forward * force, ForceMode.Impulse);
-        //_rigidbodyToPunch.AddExplosionForce(500, transform.position + transform.forward, 50);
+        print("PUNCH");
+        Fall();
+         _rigidbodyToPunch.AddForce(-transform.forward * _forceToPunch, ForceMode.Impulse);
     }
 
     public void Restore()
@@ -126,7 +115,8 @@ public class Ragdoll : MonoBehaviour
     public void FullyFall()
     {
         _isStangingAfterFalling = false;
-        Fall();
+        PunchRigidbody();
+        //Fall();
     }
 
     private void SetRigidbodyState(bool state)
@@ -233,9 +223,9 @@ public class Ragdoll : MonoBehaviour
                 //_rigidbodies[i].transform.position = Vector3.Lerp(_temp[i], _ragdollSaver.Bones.Where(b => b.Name == _rigidbodies[i].name).FirstOrDefault().Position, _timer / _standUpDuration);
                 _rigidbodies[i].transform.SetPositionAndRotation(Vector3.Lerp(_temp[i], _ragdollSaver.Bones[i].Position, _timer/ _standUpDuration), 
                     Quaternion.Euler(Vector3.Lerp(_temp2[i].eulerAngles, _ragdollSaver.Bones[i].Rotation.eulerAngles, _timer/ _standUpDuration)));
-                _timer += Time.deltaTime;
-                yield return null;
             }
+            _timer += Time.deltaTime;
+            yield return null;
         }
         OnStandedUp?.Invoke();
     }

@@ -59,10 +59,11 @@ public class Character : MonoBehaviour
         OnHit?.Invoke(damage);
     }
 
-    public void GetSpecialHit(float force)
+    public void GetSpecialHit()
     {
         _isHitted = true;
-        _ragdoll.Fall();
+        _ragdoll.PunchRigidbody();
+        //_ragdoll.Fall();
         OnFallen?.Invoke();
     }
 
