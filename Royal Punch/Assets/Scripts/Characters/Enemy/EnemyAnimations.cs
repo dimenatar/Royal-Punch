@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,6 +22,10 @@ public class EnemyAnimations : MonoBehaviour
     private const string KNOCK_ATTACK = "Knock";
     #endregion
 
+    private bool _draggingInterrapted;
+
+    public event Action<SpecialAttacks> OnSpecialAnimEnded;
+
     private void Awake()
     {
         _enemyFight.OnStartFight += () => _enemyAnimator.SetTrigger(START_ATTACK);
@@ -30,6 +35,7 @@ public class EnemyAnimations : MonoBehaviour
         _enemySpecial.OnSpecialAttackEnded += TranslateFromTiredToIdle;
         _enemySpecial.OnDraggingForceStopped += DraggingInterrupted;
         _enemy.OnDied += ResetTriggers;
+        OnSpecialAnimEnded += _enemySpecial.ApplySpecial;
     }
 
     public void ForceStop()
@@ -39,6 +45,7 @@ public class EnemyAnimations : MonoBehaviour
 
     public void DraggingInterrupted()
     {
+        _draggingInterrapted = true;
         _enemyAnimator.Play(KNOCK_ATTACK);
     }
 
@@ -47,6 +54,12 @@ public class EnemyAnimations : MonoBehaviour
         _enemyAnimator.ResetTrigger(STREAM_ATTACK);
         _enemyAnimator.ResetTrigger(SPLASH_ATTACK);
         _enemyAnimator.ResetTrigger(DRAGGING_ATTACK);
+    }
+
+    public void SpecialAnimEnded(SpecialAttacks attack)
+    {
+        print("SPECIAL ANIM ENDED");
+        OnSpecialAnimEnded?.Invoke(attack);
     }
 
     private void SetSpecialAnim(SpecialAttacks attack)
@@ -74,11 +87,14 @@ public class EnemyAnimations : MonoBehaviour
 
     private void TranslateToTired()
     {
+        if (!_draggingInterrapted)
         _enemyAnimator.SetTrigger(END_DRAGGING);
+        _draggingInterrapted = false;
     }
 
     private void TranslateFromTiredToIdle()
     {
+        print("END TIRED");
         _enemyAnimator.SetTrigger(TO_IDLE);
     }
 }
