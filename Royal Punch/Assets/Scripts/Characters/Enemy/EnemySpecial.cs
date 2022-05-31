@@ -55,6 +55,7 @@ public class EnemySpecial : MonoBehaviour
         _timerBetweenSpecialAttacks.OnTime += () => print("ONTIME");
 
         OnSpecialAttackEnded += () => _isTired = false;
+        OnSpecialAttackEnded += () => _specialAttackTimer.StartTimer();
         _enemyFight.OnStartFight += ForceStopDragging;
         OnSpecialAttackPicked += (attack) =>  _followPlayer.StopFollowing();
         OnSpecialAttackEnded += _followPlayer.StartFollowing;
@@ -63,7 +64,7 @@ public class EnemySpecial : MonoBehaviour
 
     public void Initialise()
     {
-        _timerBetweenSpecialAttacks.Initialise(_delayBetweenSpecialAttacks, startOnInit: true, repeating: true);
+        _timerBetweenSpecialAttacks.Initialise(_delayBetweenSpecialAttacks, startOnInit: true, repeating: false);
     }
 
     public void StopSpecials()
@@ -95,9 +96,13 @@ public class EnemySpecial : MonoBehaviour
         if (!_enemyFight.IsInFight && !_isInSpecialAttack && !_isTired)
         {
             // pick random attack through all of types
-            SpecialAttacks attack = SpecialAttacks.Dragging;
-            //SpecialAttacks attack = (SpecialAttacks) UnityEngine.Random.Range(0, Enum.GetNames(typeof(SpecialAttacks)).Length);
+            //SpecialAttacks attack = SpecialAttacks.Dragging;
+            SpecialAttacks attack = (SpecialAttacks) UnityEngine.Random.Range(0, Enum.GetNames(typeof(SpecialAttacks)).Length);
             StartAttack(attack);
+        }
+        else
+        {
+            _timerBetweenSpecialAttacks.StartTimer();
         }
     }
 
@@ -180,6 +185,7 @@ public class EnemySpecial : MonoBehaviour
     private void CallTiredEnded()
     {
         print("CALL TIRED ENDED");
+        _timerBetweenSpecialAttacks.StartTimer();
         OnSpecialAttackEnded?.Invoke();
     }
 

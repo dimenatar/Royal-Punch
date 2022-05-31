@@ -5495,9 +5495,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _userMoney: {fileID: 933979465}
   _values: {fileID: 1202164457}
-  _scaleAnimationDuration: 0.1
-  _unscaleAnimationDuration: 0.3
-  _animatedScaleMultiplicator: 1.2
 --- !u!114 &933979469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10682,7 +10679,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _player: {fileID: 552614982}
-  _rotationSpeed: 30
+  _rotationSpeed: 35
 --- !u!54 &1684357175
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -10820,13 +10817,13 @@ MonoBehaviour:
   _splash: {fileID: 1641264353}
   _stream: {fileID: 1985284878}
   _hitPlayerForce: 400
-  _draggingDuration: 10
+  _draggingDuration: 4
   _draggingPlayerForce: 5
   _delayBetweenSpecialAttacks: 8
   _delayBetweenAttackPickedAndApplied: 2
   _specialAttackAnimationDuration: 2
   _tiredDuration: 4
-  _delayBetweenDraggingStopedAndKnocked: 1
+  _delayBetweenDraggingStopedAndKnocked: 0.3
   _splashDamage: 20
   _streamDamage: 40
   _knockDamage: 60

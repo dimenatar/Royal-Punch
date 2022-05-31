@@ -13,7 +13,6 @@ public class HealthUpgradeManager : MonoBehaviour
 
     public void Initialise(HealthUpgrade healthUpgrade)
     {
-        print("Init health");
         _healthUpgrade = healthUpgrade;
         OnInitialised?.Invoke();
     }

@@ -35,12 +35,12 @@ public class Timer : MonoBehaviour
         {
             if (_time >= _delay)
             {
-                OnTime?.Invoke();
                 if (!_isRepeating)
                 {
                     _isStarted = false;
                 }
                 _time = 0;
+                OnTime?.Invoke();
             }
             else
             {
