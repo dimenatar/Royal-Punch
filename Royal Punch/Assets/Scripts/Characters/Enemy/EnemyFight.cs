@@ -76,7 +76,7 @@ public class EnemyFight : MonoBehaviour
 
     public void StartFightWithPlayer()
     {
-        if (!_enemySpecial.IsInSpecialAttack && !_isInFight)
+        if (!_enemySpecial.IsInSpecialAttack && !_isInFight && !_enemySpecial.IsTired)
         {
             _isInFight = true;
             OnStartFight?.Invoke();

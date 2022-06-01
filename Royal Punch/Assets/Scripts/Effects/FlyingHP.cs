@@ -9,19 +9,23 @@ public class FlyingHP : MonoBehaviour
     private Color _textColor;
     private TextMeshPro _text;
 
-    public void Initialise(int value, float lifeTime, float flyingHeight)
+    public void Initialise(int value, float lifeTime, float flyingHeight, float scalingTime, float startDissapearingDelay)
     {
         _text = GetComponent<TextMeshPro>();
         _text.text = value.ToString();
 
-        float alpha = 1;
         _textColor = _text.color;
 
-        StartCoroutine(nameof(Disapear));
+        transform.DOScale(0.4f, scalingTime);
         //DOTween.To(() => 1, x => alpha = x, 0, lifeTime).OnUpdate(() => ApplyAlpha(alpha));
-
-        transform.DOMove(transform.position + transform.up * flyingHeight, lifeTime/5*4);
+        Invoke(nameof(StartDissapearing), startDissapearingDelay);
+        transform.DOMove(transform.position + Vector3.up * flyingHeight, lifeTime/5*4);
         Destroy(gameObject, lifeTime);
+    }
+
+    private void StartDissapearing()
+    {
+        StartCoroutine(nameof(Disapear));
     }
 
     private IEnumerator Disapear()

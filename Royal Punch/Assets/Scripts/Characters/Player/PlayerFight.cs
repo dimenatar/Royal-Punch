@@ -10,6 +10,7 @@ public class PlayerFight : MonoBehaviour
     [SerializeField] private Character _player;
     [SerializeField] private EnemyFight _enemyFight;
     [SerializeField] private Ragdoll _playerRagdoll;
+    [SerializeField] private DamageMultiplier _damageMultiplier;
 
     public event Action OnEnemyEntersTrigger;
     public event Action OnEnemyExitsTrigger;
@@ -20,7 +21,11 @@ public class PlayerFight : MonoBehaviour
     private void Awake()
     {
         OnEnemyEntersTrigger += () => StartCoroutine(nameof(HitEnemy));
+        OnEnemyEntersTrigger += _damageMultiplier.StartAddind;
+
         OnEnemyExitsTrigger += () => StopCoroutine(nameof(HitEnemy));
+        OnEnemyExitsTrigger += _damageMultiplier.StopAdding;
+
         _player.OnFallen += () => StopFight();
         _playerRagdoll.OnStandedUp += TryStartFight;
         _player.OnDied += StopFight;
@@ -84,7 +89,7 @@ public class PlayerFight : MonoBehaviour
     {
         while (true)
         {
-            _enemy.TakeDamage(_damage);
+            _enemy.TakeDamage((int)(_damage * _damageMultiplier.Multiplier));
             yield return new WaitForSeconds(_delayToHit);
         }
     }

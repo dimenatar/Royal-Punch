@@ -57,7 +57,6 @@ public class EnemySpecial : MonoBehaviour
         OnSpecialAttackEnded += () => _isTired = false;
         OnSpecialAttackEnded += () => _specialAttackTimer.StartTimer();
         _enemyFight.OnStartFight += ForceStopDragging;
-        OnSpecialAttackPicked += (attack) =>  _followPlayer.StopFollowing();
         OnSpecialAttackEnded += _followPlayer.StartFollowing;
         _enemy.OnDied += Died;
     }
@@ -116,7 +115,7 @@ public class EnemySpecial : MonoBehaviour
                 case SpecialAttacks.Stream:
                     {
                         _isInSpecialAttack = true;
-                        //Invoke(nameof(DoStreamAttack), _specialAttackAnimationDuration);
+                        _followPlayer.StopFollowing();
                         break;
                     }
                 case SpecialAttacks.Dragging:
@@ -132,6 +131,7 @@ public class EnemySpecial : MonoBehaviour
                 case SpecialAttacks.SplashArea:
                     {
                         _isInSpecialAttack = true;
+                        _followPlayer.StopFollowing();
                         //Invoke(nameof(DoSplashAttack), _specialAttackAnimationDuration);
                         break;
                     }
