@@ -25,7 +25,7 @@ public class FlyingTextSpawner : MonoBehaviour
         GameObject flyingText = Instantiate(_prefab, _parent);
         flyingText.transform.position = new Vector3(Random.Range(_minMaxRandomPosX.x, _minMaxRandomPosX.y), flyingText.transform.position.y, flyingText.transform.position.z);
         FlyingHP hp = flyingText.GetComponent<FlyingHP>();
-        hp.Initialise(value, _hpLifetime, _flyHeight, _scalingTime, _dissapearingTimeDelay);
+        hp.Initialise(value, _hpLifetime, _flyHeight, _scalingTime, _dissapearingTimeDelay, Random.Range(_minMaxRandomPosX.x, _minMaxRandomPosX.y));
         //hp.Initialise(value, new Vector3(0,0,0), _hpLifetime, _flyHeight);
         flyingText.SetActive(true);
     }

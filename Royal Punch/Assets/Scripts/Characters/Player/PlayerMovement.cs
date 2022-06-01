@@ -12,12 +12,15 @@ public class PlayerMovement : MonoBehaviour
 
     private Transform _playerTransform;
 
+    [SerializeField] private Transform _armature;
+    [SerializeField] private Transform _spine;
+
     public Vector3 DraggingForce { get; set; } = Vector3.zero;
 
     private void Awake()
     {
         _controller.TouchEvent += MovePlayer;
-       _playerTransform = transform;
+        _playerTransform = transform;
     }
 
     private void FixedUpdate()
@@ -27,6 +30,18 @@ public class PlayerMovement : MonoBehaviour
 
         _playerTransform.LookAt(_enemy);
         _playerTransform.eulerAngles = new Vector3(0, _playerTransform.eulerAngles.y, 0);
+
+        //var dir = (_enemy.position - _spine.position).normalized;
+        //var lookRotation = Quaternion.LookRotation(dir);
+
+        //_spine.rotation = lookRotation;
+
+       // _spine.LookAt(_enemy);
+       // _spine.eulerAngles = new Vector3(0, _spine.eulerAngles.y, 0);
+
+        float angle = Mathf.Clamp(Mathf.Atan2(_controller.GetTouchPosition.x, _controller.GetTouchPosition.y) * Mathf.Rad2Deg, -90, 90);
+        print(angle);
+        _armature.transform.localRotation = Quaternion.Euler(new Vector3(0, angle, 0));
     }
 
     private Vector3 ConvertYVelocityToZ(Vector2 touchPos) => new Vector3(touchPos.x, 0, touchPos.y);
@@ -43,5 +58,11 @@ public class PlayerMovement : MonoBehaviour
         //_player.velocity = SetVelocityBasedOnRotation(ConvertYVelocityToZ(direction)) + DraggingForce;
         //Debug.Log(direction);
         //_player.velocity = direction;
+    }
+
+    private float Clamp(float value, float min, float max, float def)
+    {
+        if (value >= min && value <= max) return value;
+        return def;
     }
 }
