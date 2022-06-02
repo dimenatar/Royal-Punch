@@ -95,8 +95,8 @@ public class EnemySpecial : MonoBehaviour
         if (!_enemyFight.IsInFight && !_isInSpecialAttack && !_isTired)
         {
             // pick random attack through all of types
-            SpecialAttacks attack = SpecialAttacks.Stream;
-            //SpecialAttacks attack = (SpecialAttacks) UnityEngine.Random.Range(0, Enum.GetNames(typeof(SpecialAttacks)).Length);
+            //SpecialAttacks attack = SpecialAttacks.Stream;
+            SpecialAttacks attack = (SpecialAttacks) UnityEngine.Random.Range(0, Enum.GetNames(typeof(SpecialAttacks)).Length);
             StartAttack(attack);
         }
         else
@@ -167,6 +167,7 @@ public class EnemySpecial : MonoBehaviour
             print("STOP DRAGGING");
             StopCoroutine(nameof(StartDraggingPlayer));
             Invoke(nameof(CallTiredEnded), _tiredDuration);
+            _followPlayer.StopFollowing();
             OnSpecialAttackEnded?.Invoke(SpecialAttacks.Dragging);
             _playerMovement.DraggingForce = Vector3.zero;
             _isTired = true;

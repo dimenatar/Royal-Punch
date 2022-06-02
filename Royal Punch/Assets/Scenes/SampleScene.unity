@@ -2968,6 +2968,7 @@ MonoBehaviour:
   _speed: 7
   _armature: {fileID: 714358102}
   _spine: {fileID: 961837201}
+  _backwardsBorder: -0.5
 --- !u!136 &552614979
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -27985,7 +27986,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3142008408043366344, guid: e20b8766c7515a64c87e7909cf12706b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3142008408043366347, guid: e20b8766c7515a64c87e7909cf12706b, type: 3}
       propertyPath: m_RootOrder
@@ -30581,7 +30582,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1784416345}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 6.79}
+  m_LocalPosition: {x: 0, y: 0, z: 6.958}
   m_LocalScale: {x: 0.005, y: 0.005, z: 0.1}
   m_Children:
   - {fileID: 779845760}
@@ -30590,7 +30591,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: -3.5}
+  m_AnchoredPosition: {x: 0, y: -2.8}
   m_SizeDelta: {x: 408.4805, y: 122.6433}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1784416347

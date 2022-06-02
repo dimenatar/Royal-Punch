@@ -15,6 +15,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform _armature;
     [SerializeField] private Transform _spine;
 
+    [SerializeField] private float _backwardsBorder;
+
     public Vector3 DraggingForce { get; set; } = Vector3.zero;
 
     private void Awake()
@@ -36,10 +38,11 @@ public class PlayerMovement : MonoBehaviour
 
         //_spine.rotation = lookRotation;
 
-       // _spine.LookAt(_enemy);
-       // _spine.eulerAngles = new Vector3(0, _spine.eulerAngles.y, 0);
+        // _spine.LookAt(_enemy);
+        // _spine.eulerAngles = new Vector3(0, _spine.eulerAngles.y, 0);
 
-        float angle = Mathf.Clamp(Mathf.Atan2(_controller.GetTouchPosition.x, _controller.GetTouchPosition.y) * Mathf.Rad2Deg, -90, 90);
+        //float angle = Mathf.Clamp(Mathf.Atan2(_controller.GetTouchPosition.x, _controller.GetTouchPosition.y) * Mathf.Rad2Deg, -90, 90);
+        float angle = _controller.GetTouchPosition.x * 90;
         _armature.transform.localRotation = Quaternion.Euler(new Vector3(0, angle, 0));
     }
 
