@@ -43,10 +43,9 @@ public class EnemySpecial : MonoBehaviour
     public float DraggingDuration => _draggingDuration;
     public float TiredDuration => _tiredDuration;
 
-    public delegate void SpecialAttackPicked(SpecialAttacks attack);
-
-    public event SpecialAttackPicked OnSpecialAttackPicked;
-    public event Action OnSpecialAttackEnded;
+    public event Action <SpecialAttacks> OnSpecialAttackPicked;
+    public event Action<SpecialAttacks> OnSpecialAttackEnded;
+    public event Action OnSpecialPhaseEnded;
     public event Action OnDraggingForceStopped;
 
     private void Awake()
@@ -54,10 +53,10 @@ public class EnemySpecial : MonoBehaviour
         _timerBetweenSpecialAttacks.OnTime += PickRandomSpecialAttack;
         _timerBetweenSpecialAttacks.OnTime += () => print("ONTIME");
 
-        OnSpecialAttackEnded += () => _isTired = false;
-        OnSpecialAttackEnded += () => _specialAttackTimer.StartTimer();
+        OnSpecialPhaseEnded += () => _isTired = false;
+        OnSpecialPhaseEnded += () => _specialAttackTimer.StartTimer();
         _enemyFight.OnStartFight += ForceStopDragging;
-        OnSpecialAttackEnded += _followPlayer.StartFollowing;
+        OnSpecialPhaseEnded += _followPlayer.StartFollowing;
         _enemy.OnDied += Died;
     }
 
@@ -73,6 +72,7 @@ public class EnemySpecial : MonoBehaviour
 
     public void ApplySpecial(SpecialAttacks attack)
     {
+        OnSpecialAttackEnded?.Invoke(attack);
         switch (attack)
         {
             case SpecialAttacks.Stream:
@@ -167,6 +167,7 @@ public class EnemySpecial : MonoBehaviour
             print("STOP DRAGGING");
             StopCoroutine(nameof(StartDraggingPlayer));
             Invoke(nameof(CallTiredEnded), _tiredDuration);
+            OnSpecialAttackEnded?.Invoke(SpecialAttacks.Dragging);
             _playerMovement.DraggingForce = Vector3.zero;
             _isTired = true;
             _isDragging = false;
@@ -186,7 +187,7 @@ public class EnemySpecial : MonoBehaviour
     {
         print("CALL TIRED ENDED");
         _timerBetweenSpecialAttacks.StartTimer();
-        OnSpecialAttackEnded?.Invoke();
+        OnSpecialPhaseEnded?.Invoke();
     }
 
     //if we start fight with player

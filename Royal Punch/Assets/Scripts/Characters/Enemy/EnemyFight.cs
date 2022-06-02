@@ -25,7 +25,7 @@ public class EnemyFight : MonoBehaviour
 
     private void Awake()
     {
-        _enemySpecial.OnSpecialAttackEnded += TryStartFightWithPlayer;
+        _enemySpecial.OnSpecialPhaseEnded += TryStartFightWithPlayer;
         _enemy.OnDied += StopFightWithPlayer;
     }
 

@@ -32,7 +32,7 @@ public class EnemyAnimations : MonoBehaviour
         _enemyFight.OnEndFight += () => _enemyAnimator.SetTrigger(END_ATTACK);
         _enemySpecial.OnSpecialAttackPicked += SetSpecialAnim;
         //_enemySpecial.OnSpecialAttackEnded += () => Invoke(nameof(TranslateFromTiredToIdle), _enemySpecial.TiredDuration);
-        _enemySpecial.OnSpecialAttackEnded += TranslateFromTiredToIdle;
+        _enemySpecial.OnSpecialPhaseEnded += TranslateFromTiredToIdle;
         _enemySpecial.OnDraggingForceStopped += DraggingInterrupted;
         _enemy.OnDied += ResetTriggers;
         OnSpecialAnimEnded += _enemySpecial.ApplySpecial;
