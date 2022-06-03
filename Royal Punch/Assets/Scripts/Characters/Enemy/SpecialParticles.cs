@@ -17,6 +17,7 @@ public class SpecialParticles : MonoBehaviour
         //_enemyAnimations.OnSpecialAnimEnded += DisplaySpecialEffect;
         _enemySpecial.OnSpecialAttackEnded += DisplaySpecialEffect;
         _enemySpecial.OnSpecialAttackPicked += DisplaySparks;
+        _enemySpecial.OnDraggingForceStopped += () => DisplaySpecialEffect(SpecialAttacks.Dragging);
     }
 
     private void DisplaySpecialEffect(SpecialAttacks attack)

@@ -19,6 +19,12 @@ public class ShopView : MonoBehaviour
     [SerializeField] private Image _healthNotEnoghtMoney;
     [SerializeField] private Image _damageNotEnoughtMoney;
 
+    [SerializeField] private Button _health;
+    [SerializeField] private Button _damage;
+
+    [SerializeField] private GameObject _healthCoin;
+    [SerializeField] private GameObject _damageCoin;
+
     private void Awake()
     {
         _healthUpgradeManager.OnInitialised += DisplayHealth;
@@ -77,6 +83,8 @@ public class ShopView : MonoBehaviour
         {
             _healthLevel.text = $"LV. MAX";
             _healthPrice.gameObject.SetActive(false);
+            _healthCoin.SetActive(false);
+            _health.enabled = false;
         }
     }
 
@@ -100,6 +108,8 @@ public class ShopView : MonoBehaviour
         {
             _damageLevel.text = $"LV. MAX";
             _damagePrice.gameObject.SetActive(false);
+            _damageCoin.SetActive(false);
+            _damage.enabled = false;
         }
     }
 }

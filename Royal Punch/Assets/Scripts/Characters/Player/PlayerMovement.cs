@@ -41,8 +41,13 @@ public class PlayerMovement : MonoBehaviour
         // _spine.LookAt(_enemy);
         // _spine.eulerAngles = new Vector3(0, _spine.eulerAngles.y, 0);
 
-        //float angle = Mathf.Clamp(Mathf.Atan2(_controller.GetTouchPosition.x, _controller.GetTouchPosition.y) * Mathf.Rad2Deg, -90, 90);
-        float angle = _controller.GetTouchPosition.x * 90;
+        float angle = 0;
+        if (_controller.GetTouchPosition.y >=0)
+        angle = Mathf.Clamp(Mathf.Atan2(_controller.GetTouchPosition.x, _controller.GetTouchPosition.y) * Mathf.Rad2Deg, -90, 90);
+        else
+        angle = _controller.GetTouchPosition.x * 90;
+         //float angle = Clamp(Mathf.Atan2(_controller.GetTouchPosition.x, _controller.GetTouchPosition.y) * Mathf.Rad2Deg, -90, 90);
+        print(angle);
         _armature.transform.localRotation = Quaternion.Euler(new Vector3(0, angle, 0));
     }
 
@@ -62,9 +67,10 @@ public class PlayerMovement : MonoBehaviour
         //_player.velocity = direction;
     }
 
-    private float Clamp(float value, float min, float max, float def)
+    private float Clamp(float value, float min, float max)
     {
         if (value >= min && value <= max) return value;
-        return def;
+        else if (value < min) return min;
+        else return max;
     }
 }
