@@ -10,5 +10,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 65d17d631f5e0ce48bdccfb4fe76dcc7, type: 3}
-  m_Name: PlayerRagdoll
+  m_Name: RagdollSaver
   m_EditorClassIdentifier: 
