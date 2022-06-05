@@ -19,6 +19,8 @@ public class DamageMultiplier : MonoBehaviour
 
     public event Action<float> OnMultiplierChanged;
 
+    public float MaxMultiplier => _maxMultiplier;
+
     public float Multiplier { get => _multiplier; private set
         {
             _multiplier = value;

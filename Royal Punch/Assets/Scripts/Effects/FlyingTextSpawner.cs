@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class FlyingTextSpawner : MonoBehaviour
 {
     [SerializeField] private Character _character;
+    [SerializeField] private ColorByDamageMultiplier _colorByDamage;
 
     [SerializeField] private Transform _parent;
     [SerializeField] private GameObject _prefab;
@@ -23,6 +25,7 @@ public class FlyingTextSpawner : MonoBehaviour
     public void SpawnHP(int value)
     {
         GameObject flyingText = Instantiate(_prefab, _parent);
+        flyingText.GetComponent<TextMeshPro>().color = _colorByDamage.CurrentColor;
         flyingText.transform.position = new Vector3(Random.Range(_minMaxRandomPosX.x, _minMaxRandomPosX.y), flyingText.transform.position.y, flyingText.transform.position.z);
         FlyingHP hp = flyingText.GetComponent<FlyingHP>();
         hp.Initialise(value, _hpLifetime, _flyHeight, _scalingTime, _dissapearingTimeDelay, Random.Range(_minMaxRandomPosX.x, _minMaxRandomPosX.y));

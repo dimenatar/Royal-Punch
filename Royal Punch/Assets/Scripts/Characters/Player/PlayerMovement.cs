@@ -47,7 +47,6 @@ public class PlayerMovement : MonoBehaviour
         else
         angle = _controller.GetTouchPosition.x * 90;
          //float angle = Clamp(Mathf.Atan2(_controller.GetTouchPosition.x, _controller.GetTouchPosition.y) * Mathf.Rad2Deg, -90, 90);
-        print(angle);
         _armature.transform.localRotation = Quaternion.Euler(new Vector3(0, angle, 0));
     }
 

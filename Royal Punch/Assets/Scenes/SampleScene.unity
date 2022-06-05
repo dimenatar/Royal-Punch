@@ -19683,6 +19683,7 @@ GameObject:
   - component: {fileID: 933979475}
   - component: {fileID: 933979474}
   - component: {fileID: 933979476}
+  - component: {fileID: 933979477}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -19966,6 +19967,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _character: {fileID: 1684357181}
+  _colorByDamage: {fileID: 933979477}
   _parent: {fileID: 267881875}
   _prefab: {fileID: 2083241398109463834, guid: 8db803635fd43694a8b5425b0c16aa1b, type: 3}
   _hpLifetime: 3
@@ -20056,12 +20058,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1070ac2920224d543b3831f42aba169a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _reduceDelay: 1
+  _reduceDelay: 0.75
   _reduceAmount: 0.1
-  _addDelay: 0.5
+  _addDelay: 0.75
   _addAmount: 0.1
-  _maxMultiplier: 5
-  _delayToReduce: 2
+  _maxMultiplier: 2
+  _delayToReduce: 5
 --- !u!114 &933979476
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20080,6 +20082,49 @@ MonoBehaviour:
   _enemySpecial: {fileID: 1684357182}
   _mainSparks: {fileID: 575851721}
   _handSparks: {fileID: 669578198}
+--- !u!114 &933979477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 933979454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06c574188e6c93b418c14878c04b324c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _damageMultiplier: {fileID: 933979475}
+  _multiplierText: {fileID: 1843350598}
+  _gradient:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 0.9811321, g: 0.8884648, b: 0.7913849, a: 1}
+    key2: {r: 1, g: 0.50675887, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 3277
+    ctime2: 65535
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 3
+    m_NumAlphaKeys: 2
 --- !u!1 &938995821
 GameObject:
   m_ObjectHideFlags: 0
