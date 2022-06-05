@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu (menuName = "Ragdoll Saver", fileName = "New Ragdoll Saver", order = 43)]
 public class RagdollSaver : ScriptableObject
 {
-    private List<Bone> _bones = new List<Bone>();
+    public List<Bone> _bones = new List<Bone>();
 
     public List<Bone> Bones => _bones;
 

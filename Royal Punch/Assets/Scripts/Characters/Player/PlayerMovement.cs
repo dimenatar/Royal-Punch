@@ -7,22 +7,23 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Rigidbody _player;
     [SerializeField] private SimpleTouchController _controller;
     [SerializeField] private Transform _enemy;
+    [SerializeField] private Ragdoll _ragdoll;
 
     [SerializeField] private float _speed = 5;
 
-    private Transform _playerTransform;
-
     [SerializeField] private Transform _armature;
-    [SerializeField] private Transform _spine;
 
-    [SerializeField] private float _backwardsBorder;
-
+    private bool _isRotating = true;
+    private Transform _playerTransform;
     public Vector3 DraggingForce { get; set; } = Vector3.zero;
 
     private void Awake()
     {
         _controller.TouchEvent += MovePlayer;
         _playerTransform = transform;
+        _ragdoll.OnFall += () => _isRotating = false;
+        _ragdoll.OnFall += () => _armature.transform.localRotation = Quaternion.identity;
+        _ragdoll.OnStandedUp += () => _isRotating = true;
     }
 
     private void FixedUpdate()
@@ -40,14 +41,15 @@ public class PlayerMovement : MonoBehaviour
 
         // _spine.LookAt(_enemy);
         // _spine.eulerAngles = new Vector3(0, _spine.eulerAngles.y, 0);
-
-        //float angle = 0;
-        //if (_controller.GetTouchPosition.y >=0)
-        //angle = Mathf.Clamp(Mathf.Atan2(_controller.GetTouchPosition.x, _controller.GetTouchPosition.y) * Mathf.Rad2Deg, -90, 90);
-        //else
-        //angle = _controller.GetTouchPosition.x * 90;
-
-        //_armature.transform.localRotation = Quaternion.Euler(new Vector3(0, angle, 0));
+        if (_isRotating)
+        {
+            float angle = 0;
+            if (_controller.GetTouchPosition.y >= 0)
+                angle = Mathf.Clamp(Mathf.Atan2(_controller.GetTouchPosition.x, _controller.GetTouchPosition.y) * Mathf.Rad2Deg, -90, 90);
+            else
+                angle = _controller.GetTouchPosition.x * 90;
+            _armature.transform.localRotation = Quaternion.Euler(new Vector3(0, angle, 0));
+        }
     }
 
     private Vector3 ConvertYVelocityToZ(Vector2 touchPos) => new Vector3(touchPos.x, 0, touchPos.y);

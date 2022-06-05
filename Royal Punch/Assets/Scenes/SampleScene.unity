@@ -3058,7 +3058,7 @@ MonoBehaviour:
   _mainColliders:
   - {fileID: 552614974}
   - {fileID: 552614979}
-  _head: {fileID: 1531180636}
+  _head: {fileID: 81198558}
   _player: {fileID: 0}
   _rigidbodyToPunch: {fileID: 81198558}
   _camera: {fileID: 1910877004}
@@ -29113,12 +29113,12 @@ ConfigurableJoint:
   m_RotationDriveMode: 0
   m_AngularXDrive:
     serializedVersion: 3
-    positionSpring: 1000
+    positionSpring: 100
     positionDamper: 100
     maximumForce: 3.4028233e+38
   m_AngularYZDrive:
     serializedVersion: 3
-    positionSpring: 1000
+    positionSpring: 100
     positionDamper: 100
     maximumForce: 3.4028233e+38
   m_SlerpDrive:
@@ -37853,12 +37853,12 @@ CharacterJoint:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1978198183}
-  m_ConnectedBody: {fileID: 0}
+  m_ConnectedBody: {fileID: 1531180636}
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 0, y: 0, z: 1}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 8.828473, y: 5.9678698, z: -0.51759565}
+  m_ConnectedAnchor: {x: -0.09287763, y: -0.17768164, z: 0.05324699}
   serializedVersion: 2
   m_SwingAxis: {x: 1, y: 0, z: 0}
   m_TwistLimitSpring:
