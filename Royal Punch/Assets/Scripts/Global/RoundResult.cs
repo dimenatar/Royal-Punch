@@ -31,6 +31,7 @@ public class RoundResult : MonoBehaviour
     [SerializeField] private Ragdoll _playerRagdoll;
 
     [SerializeField] private List<GameObject> _UIElementsToHide;
+    [SerializeField] private DamageMultiplierView _damangeMultiplierView;
 
     public event Action OnRoundEnded;
 
@@ -68,6 +69,7 @@ public class RoundResult : MonoBehaviour
 
         _UIElementsToHide.ForEach(element => element.SetActive(false));
         _camera.SetTrigger("Out");
+        _damangeMultiplierView.CompletlyHide();
     }
 
     private void PlayerDied() => EndRound(false);

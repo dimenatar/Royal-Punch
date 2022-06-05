@@ -33,8 +33,8 @@ public class EnemySpecial : MonoBehaviour
     [SerializeField] private int _streamDamage = 40;
     [SerializeField] private int _knockDamage = 60;
 
-    public bool _isInSpecialAttack;
-    public bool _isDragging;
+    private bool _isInSpecialAttack;
+    private bool _isDragging;
     private bool _isTired;
     public bool IsDragging => _isDragging;
     public bool IsInSpecialAttack => _isInSpecialAttack;
@@ -95,8 +95,8 @@ public class EnemySpecial : MonoBehaviour
         if (!_enemyFight.IsInFight && !_isInSpecialAttack && !_isTired)
         {
             // pick random attack through all of types
-            //SpecialAttacks attack = SpecialAttacks.Stream;
-            SpecialAttacks attack = (SpecialAttacks) UnityEngine.Random.Range(0, Enum.GetNames(typeof(SpecialAttacks)).Length);
+            SpecialAttacks attack = SpecialAttacks.Stream;
+            //SpecialAttacks attack = (SpecialAttacks) UnityEngine.Random.Range(0, Enum.GetNames(typeof(SpecialAttacks)).Length);
             StartAttack(attack);
         }
         else

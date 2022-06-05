@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class Pause : MonoBehaviour
 {
@@ -11,13 +12,17 @@ public class Pause : MonoBehaviour
     [SerializeField] private LevelLoader _levelLoader;
     [SerializeField] private TouchPosition _touchPosition;
 
+    [SerializeField] private float _timeToAnimate = 0.3f;
+
     public void PauseClick()
     {
         _enemySpecial.StopSpecials();
         _playerFight.enabled = false;
         _enemyFight.enabled = false;
-        Time.timeScale = 0;
+        _pauseMenu.GetComponent<RectTransform>().localScale = Vector3.zero;
         _pauseMenu.SetActive(true);
+        _pauseMenu.GetComponent<RectTransform>().DOScale(1, _timeToAnimate).SetUpdate(true).OnComplete(() => _pauseMenu.transform.DOPunchScale(new Vector3(2,2,2), 0.2f, 2)).SetUpdate(true);
+        Time.timeScale = 0;
         _touchPosition.DisalbeTouch();
     }
 
@@ -27,7 +32,8 @@ public class Pause : MonoBehaviour
         _playerFight.enabled = true;
         _enemyFight.enabled = true;
         Time.timeScale = 1;
-        _pauseMenu.SetActive(false);
+        _pauseMenu.GetComponent<RectTransform>().DOScale(0, _timeToAnimate).OnComplete(() => _pauseMenu.SetActive(false));
+       // _pauseMenu.SetActive(false);
         _touchPosition.Enabletouch();
     }
 

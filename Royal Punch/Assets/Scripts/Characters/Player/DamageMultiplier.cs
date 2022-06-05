@@ -88,7 +88,9 @@ public class DamageMultiplier : MonoBehaviour
             else
             {
                 //ее костыли
-                Multiplier = 1.00001f;
+                if (Multiplier != 1.00001f)
+                    Multiplier = 1.00001f;
+                else Multiplier = 1;
             }
             yield return new WaitForSeconds(_reduceDelay);
         }

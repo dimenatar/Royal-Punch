@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using DG.Tweening;
 
 public class EndPanel : MonoBehaviour
 {
@@ -17,6 +18,9 @@ public class EndPanel : MonoBehaviour
     [SerializeField] private LevelLoader _levelLoader;
     [SerializeField] private DataLoader _dataLoader;
 
+    [SerializeField] private float _timeToAnimate = 0.3f;
+    [SerializeField] private float _delayToShow = 1;
+
     private bool _isWin;
     private int _reward;
 
@@ -29,17 +33,7 @@ public class EndPanel : MonoBehaviour
     public void ShowPanel(bool win)
     {
         _isWin = win;
-        if (win)
-        {
-            _result.text = "SUCCESS!";
-        }
-        else
-        {
-            _result.text = "FAIL!";
-        }
-        _reward = _money.CalculateReward(_enemy);
-        _moneyText.text = _reward.ToString();
-        _panel.SetActive(true);
+        Invoke(nameof(Show), _delayToShow);
        // Time.timeScale = 0;
     }
 
@@ -57,6 +51,22 @@ public class EndPanel : MonoBehaviour
         Time.timeScale = 1;
     }
 
+    private void Show()
+    { 
+        if (_isWin)
+        {
+            _result.text = "SUCCESS!";
+        }
+        else
+        {
+            _result.text = "FAIL!";
+        }
+        _reward = _money.CalculateReward(_enemy);
+        _moneyText.text = _reward.ToString();
+        _panel.GetComponent<RectTransform>().localScale = Vector3.zero;
+        _panel.SetActive(true);
+        _panel.GetComponent<RectTransform>().DOScale(1, _timeToAnimate);
+    }
 
     private void PlayerDied() => ShowPanel(false);
     private void EnemyDied() => ShowPanel(true);

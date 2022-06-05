@@ -82,15 +82,14 @@ public class Ragdoll : MonoBehaviour
     {
         if (!_isFallen)
         {
+            OnFall?.Invoke();
+
+            _isFallen = true;
             SetRigidbodyState(false);
             SetColliderState(true);
 
             if (_isStangingAfterFalling)
                 Invoke(nameof(Stand), _delayToStand);
-
-            OnFall?.Invoke();
-
-            _isFallen = true;
         }
     }
 
