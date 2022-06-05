@@ -62,7 +62,14 @@ public class DamageMultiplier : MonoBehaviour
         _isAdding = true;
         while (Multiplier < _maxMultiplier)
         {
-            Multiplier += _addAmount;
+            if (Multiplier == 1)
+            {
+                Multiplier = 1.00001f;
+            }
+            else
+            {
+                Multiplier += _addAmount;
+            }
             yield return new WaitForSeconds(_addDelay);
         }
         Multiplier = _maxMultiplier;
@@ -74,7 +81,15 @@ public class DamageMultiplier : MonoBehaviour
         _isReducing = true;
         while (Multiplier > 1)
         {
-            Multiplier -= _reduceAmount;
+            if (Multiplier - _reduceAmount > 1)
+            {
+                Multiplier -= _reduceAmount;
+            }
+            else
+            {
+                //ее костыли
+                Multiplier = 1.00001f;
+            }
             yield return new WaitForSeconds(_reduceDelay);
         }
         Multiplier = 1;

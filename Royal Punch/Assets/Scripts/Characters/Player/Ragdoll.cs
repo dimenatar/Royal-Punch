@@ -91,6 +91,11 @@ public class Ragdoll : MonoBehaviour
         }
     }
 
+    public void WriteBones()
+    {
+
+    }
+
     private void Stand()
     {
         if (_isStangingAfterFalling)
